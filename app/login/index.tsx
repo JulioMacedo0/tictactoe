@@ -1,9 +1,9 @@
-import * as S from "./styles";
+import { View, Text } from "react-native";
 
 export default function Login() {
   return (
-    <S.Container>
-      <S.Text>Texto</S.Text>
-    </S.Container>
+    <View className="flex-1 items-center justify-center ">
+      <Text>Login</Text>
+    </View>
   );
 }

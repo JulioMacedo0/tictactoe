@@ -1,21 +1,11 @@
-import { View, StyleSheet } from "react-native";
-import { Slot } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { Stack } from "expo-router";
+import { ThemeProvider } from "styled-components";
+import { defaultTheme } from "./themes/default";
+
 export default function Layout() {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Slot />
-    </View>
+    <ThemeProvider theme={defaultTheme}>
+      <Stack initialRouteName="/login" screenOptions={{}} />
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-    backgroundColor: "#0000ff",
-  },
-});

@@ -1,5 +1,4 @@
-import { Link, Redirect, Stack } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { Redirect } from "expo-router";
 
 export default function Page() {
   const useAuth = false;

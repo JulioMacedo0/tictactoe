@@ -8,7 +8,7 @@ export default function Login() {
   const route = useRouter();
   return (
     <LinearGradient
-      colors={["#fb832c", "#fb4764"]}
+      colors={["#fed168", "#fa2c5d"]}
       className="flex-1 items-center justify-center "
     >
       <StatusBar style="light" />

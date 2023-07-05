@@ -5,8 +5,9 @@ export default function Layout() {
   return (
     <Tabs
       screenOptions={{
+        headerTitle: "",
         headerStyle: {
-          backgroundColor: "#fb832c",
+          backgroundColor: "#fee4ea",
         },
         headerTintColor: "#fff",
         headerTitleStyle: {
@@ -14,7 +15,13 @@ export default function Layout() {
         },
       }}
     >
-      <Tabs.Screen name="home" />
+      <Tabs.Screen
+        name="home"
+        options={{
+          tabBarLabel: "Home",
+        }}
+      />
+      <Tabs.Screen name="history" />
     </Tabs>
   );
 }

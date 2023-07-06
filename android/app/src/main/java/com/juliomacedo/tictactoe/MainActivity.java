@@ -1,4 +1,4 @@
-package com.tictactoe;
+package com.juliomacedo.tictactoe;
 
 import android.os.Build;
 import android.os.Bundle;

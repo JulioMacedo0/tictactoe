@@ -4,12 +4,17 @@
     "slug": "tic-tac-toe",
     "version": "1.0.0",
     "scheme": "myapp",
-
     "web": {
       "bundler": "metro"
     },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.juliomacedo.tictactoe"
+    },
+    "ios": {
+      "bundleIdentifier": "com.juliomacedo.tictactoe"
+    }
   }
 }

@@ -1,4 +1,4 @@
-package com.tictactoe;
+package com.juliomacedo.tictactoe;
 
 import android.app.Application;
 import android.content.res.Configuration;

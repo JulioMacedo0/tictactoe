@@ -1,12 +1,19 @@
 import { StyleSheet, View, Text } from "react-native";
 import Profile from "../components/Profile";
 import Card from "../components/Card";
+import { useRouter } from "expo-router";
 
 export default function HomePage() {
+  const navigate = useRouter();
   return (
-    <View className="flex-1 items-center bg-background">
+    <View className="flex-1 items-center bg-background ">
       <Profile imageUrl="https://avatars.githubusercontent.com/u/57598810?v=4" />
-      <Card variant="gold" />
+      <Card
+        variant="rose"
+        text="Find Match"
+        className="mt-auto mb-4"
+        onPress={() => navigate.push("/playground")}
+      />
     </View>
   );
 }

@@ -4,9 +4,9 @@ import Card from "../components/Card";
 
 export default function HomePage() {
   return (
-    <View className="flex-1  items-center bg-background">
+    <View className="flex-1 items-center bg-background">
       <Profile imageUrl="https://avatars.githubusercontent.com/u/57598810?v=4" />
-      <Card />
+      <Card variant="gold" />
     </View>
   );
 }

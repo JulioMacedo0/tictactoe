@@ -2,15 +2,21 @@ import { View, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 interface CardProps {
   className?: string;
+  variant: "gold" | "rose";
 }
 
-const Card = ({ className }: CardProps) => {
+const Card = ({ className, variant }: CardProps) => {
+  const goldGradient = ["#fdcb5f", "#fda538"];
+  const roseGradient = ["#f85577", "#f22551"];
+
+  const arrayColors = variant == "gold" ? goldGradient : roseGradient;
+  const textColor = variant == "gold" ? "text-black" : "text-white";
   return (
     <LinearGradient
-      colors={["#fdcb5f", "#fda538"]}
+      colors={arrayColors}
       className={`bg-gold w-[80%] h-[50px] rounded-xl justify-center ${className}`}
     >
-      <Text className="text-base text-black text-center font-bold">75</Text>
+      <Text className={`text-base text-center font-bold ${textColor}`}>75</Text>
     </LinearGradient>
   );
 };

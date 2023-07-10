@@ -5,7 +5,7 @@ interface ProfileProps {
   imageUrl: string;
 }
 
-export default function Profile({ imageUrl }: ProfileProps) {
+export const Profile = ({ imageUrl }: ProfileProps) => {
   return (
     <View className="bg-white w-[180px] h-[80px] justify-end items-center pb-4 rounded-3xl  mt-[60px] ">
       <View className="bg-white rounded-full overflow-hidden border-4 border-white w-[70px] h-[70px] self-center absolute -top-[35px]">
@@ -25,4 +25,4 @@ export default function Profile({ imageUrl }: ProfileProps) {
       <Text className="text-base font-bold">Julio Macedo</Text>
     </View>
   );
-}
+};

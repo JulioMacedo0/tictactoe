@@ -1,5 +1,6 @@
 import { Pressable, Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useCorlos } from "../../hooks/useColors";
 interface CardProps {
   className?: string;
   variant: "gold" | "rose";
@@ -7,9 +8,11 @@ interface CardProps {
   onPress?: () => void;
 }
 
-const Card = ({ className, variant, text, onPress }: CardProps) => {
-  const goldGradient = ["#fdcb5f", "#fda538"];
-  const roseGradient = ["#f85577", "#f22551"];
+export const Card = ({ className, variant, text, onPress }: CardProps) => {
+  const { primary, secundary, lightPrimary, lightSecundary } = useCorlos();
+
+  const goldGradient = [lightPrimary, primary];
+  const roseGradient = [lightSecundary, secundary];
 
   const arrayColors = variant == "gold" ? goldGradient : roseGradient;
   const textColor = variant == "gold" ? "text-black" : "text-white";
@@ -27,5 +30,3 @@ const Card = ({ className, variant, text, onPress }: CardProps) => {
     </TouchableOpacity>
   );
 };
-
-export default Card;

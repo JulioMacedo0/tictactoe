@@ -1,6 +1,6 @@
-import { StyleSheet, View, Text } from "react-native";
-import Profile from "../components/Profile";
-import Card from "../components/Card";
+import { View } from "react-native";
+import { Profile } from "@components/Profile";
+import { Card } from "@components/Card";
 import { useRouter } from "expo-router";
 
 export default function HomePage() {
@@ -11,8 +11,8 @@ export default function HomePage() {
       <Card
         variant="rose"
         text="Find Match"
-        className="mt-auto mb-4"
-        onPress={() => navigate.push("/playground")}
+        className="mt-auto"
+        onPress={() => navigate.push("/playground/")}
       />
     </View>
   );

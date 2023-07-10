@@ -1,14 +1,17 @@
-import { Link, Stack } from "expo-router";
+// import { useCorlos } from "../hooks/useColors";
 import { StatusBar } from "expo-status-bar";
 import { Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { useCorlos } from "../hooks/useColors";
 
 export default function Login() {
   const route = useRouter();
+
+  const { primary, secundary } = useCorlos();
   return (
     <LinearGradient
-      colors={["#fed168", "#fa2c5d"]}
+      colors={[primary, secundary]}
       className="flex-1 items-center justify-center "
     >
       <StatusBar style="light" />

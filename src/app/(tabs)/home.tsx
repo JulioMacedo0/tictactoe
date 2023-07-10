@@ -11,7 +11,7 @@ export default function HomePage() {
       <Card
         variant="rose"
         text="Find Match"
-        className="mt-auto"
+        style="mt-auto"
         onPress={() => navigate.push("/playground/")}
       />
     </View>

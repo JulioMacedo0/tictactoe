@@ -1,13 +1,14 @@
+import { useCorlos } from "@/hooks/useColors";
 import { Tabs } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 
 export default function Layout() {
+  const { background } = useCorlos();
   return (
     <Tabs
       screenOptions={{
         headerTitle: "",
         headerStyle: {
-          backgroundColor: "#fee4ea",
+          backgroundColor: background,
         },
         headerTintColor: "#fff",
         headerTitleStyle: {

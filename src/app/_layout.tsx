@@ -1,15 +1,17 @@
+import { useCorlos } from "@/hooks/useColors";
 import { Stack } from "expo-router";
 
 export default function Layout() {
+  const { background } = useCorlos();
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="playground/index"
+        name="playground"
         options={{
           headerShown: true,
           title: "Online Game",
           headerStyle: {
-            backgroundColor: "#f4511e",
+            backgroundColor: background,
           },
         }}
       />

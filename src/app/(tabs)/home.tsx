@@ -12,7 +12,7 @@ export default function HomePage() {
         variant="rose"
         text="Find Match"
         style="mt-auto mb-4"
-        onPress={() => navigate.push("/playground/")}
+        onPress={() => navigate.push("/playground")}
       />
     </View>
   );

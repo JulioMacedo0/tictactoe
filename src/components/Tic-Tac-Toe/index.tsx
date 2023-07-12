@@ -1,12 +1,6 @@
-import { useCorlos } from '@/hooks/useColors';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  TouchableHighlight,
-  Button,
-  Pressable,
-} from 'react-native';
+import { useCorlos } from "@/hooks/useColors";
+import { View, StyleSheet } from "react-native";
+import { TicTacToeButton } from "@components/Tic-Tac-Button";
 
 export const TicTacToe = () => {
   return (
@@ -15,27 +9,22 @@ export const TicTacToe = () => {
         className="flex-1 bg-white p-1 overflow-hidden"
         style={styles.border}
       >
-        <View className="flex-1 p-4 bg-secundary rounded-2xl overflow-hidden divide-y-2 divide-dashed divide-white">
-          <View className="flex-1 flex-row divide-x-2 divide-dashed divide-white">
-            <TouchableOpacity
-              className="flex-1 bg-secundary "
-              onPress={() => console.log('tapped 1')}
-            />
-            <TouchableOpacity className="flex-1 bg-secundary " />
-            <TouchableOpacity className="flex-1 bg-secundary " />
-          </View>
+        <View className="flex-1 flex-row rounded-t-2xl overflow-hidden">
+          <TicTacToeButton onPress={() => console.log("1")} />
+          <TicTacToeButton />
+          <TicTacToeButton />
+        </View>
 
-          <View className="flex-1  flex-row divide-x-2 divide-dashed divide-white">
-            <TouchableOpacity className="flex-1 bg-secundary " />
-            <TouchableOpacity className="flex-1 bg-secundary " />
-            <TouchableOpacity className="flex-1 bg-secundary " />
-          </View>
+        <View className="flex-1  flex-row ">
+          <TicTacToeButton />
+          <TicTacToeButton />
+          <TicTacToeButton />
+        </View>
 
-          <View className="flex-1 flex-row divide-x-2 divide-dashed divide-white">
-            <TouchableOpacity className="flex-1 bg-secundary " />
-            <TouchableOpacity className="flex-1 bg-secundary " />
-            <TouchableOpacity className="flex-1 bg-secundary " />
-          </View>
+        <View className="flex-1 flex-row rounded-b-2xl overflow-hidden">
+          <TicTacToeButton />
+          <TicTacToeButton />
+          <TicTacToeButton />
         </View>
       </View>
     </View>
@@ -45,7 +34,7 @@ const { secundary } = useCorlos();
 const styles = StyleSheet.create({
   border: {
     borderRadius: 15,
-    borderStyle: 'dashed',
+    borderStyle: "dashed",
     borderWidth: 2,
     borderColor: secundary,
   },

@@ -15,6 +15,12 @@ export default function Layout() {
           },
         }}
       />
+      <Stack.Screen
+        name="login"
+        options={{
+          animation: "fade",
+        }}
+      />
     </Stack>
   );
 }

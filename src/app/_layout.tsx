@@ -4,7 +4,12 @@ import { Stack } from "expo-router";
 export default function Layout() {
   const { background } = useCorlos();
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack
+      screenOptions={{
+        animation: "fade",
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="playground"
         options={{
@@ -13,6 +18,12 @@ export default function Layout() {
           headerStyle: {
             backgroundColor: background,
           },
+        }}
+      />
+      <Stack.Screen
+        name="login"
+        options={{
+          animation: "fade",
         }}
       />
     </Stack>

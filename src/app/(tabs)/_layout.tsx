@@ -1,4 +1,4 @@
-import { useCorlos } from "@/hooks/useColors";
+import { useCorlos } from "@/hooks/use-colors";
 import { Tabs } from "expo-router";
 
 export default function Layout() {

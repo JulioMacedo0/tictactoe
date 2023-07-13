@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import { useCorlos } from "@hooks/useColors";
+import { useCorlos } from "@hooks/use-colors";
 
 export default function Login() {
   const route = useRouter();

@@ -1,4 +1,4 @@
-import { useCorlos } from "@/hooks/useColors";
+import { useCorlos } from "@/hooks/use-colors";
 import { Pressable } from "react-native";
 
 interface TicTacToeButtonProps {

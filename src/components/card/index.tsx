@@ -1,6 +1,6 @@
-import { Pressable, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useCorlos } from "../../hooks/useColors";
+import { useCorlos } from "../../hooks/use-colors";
 interface CardProps {
   style?: string;
   variant: "gold" | "rose";

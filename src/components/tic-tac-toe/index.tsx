@@ -1,6 +1,6 @@
-import { useCorlos } from "@/hooks/useColors";
+import { useCorlos } from "@/hooks/use-colors";
 import { View, StyleSheet } from "react-native";
-import { TicTacToeButton } from "@components/Tic-Tac-Button";
+import { TicTacToeButton } from "@/components/tic-tac-button";
 
 export const TicTacToe = () => {
   return (

@@ -1,4 +1,4 @@
-import { useCorlos } from "@/hooks/use-colors";
+import { useColors } from "@/hooks/use-colors";
 import { View, StyleSheet } from "react-native";
 import { TicTacToeButton } from "@/components/tic-tac-button";
 
@@ -30,7 +30,7 @@ export const TicTacToe = () => {
     </View>
   );
 };
-const { secundary } = useCorlos();
+const { secundary } = useColors();
 const styles = StyleSheet.create({
   border: {
     borderRadius: 15,

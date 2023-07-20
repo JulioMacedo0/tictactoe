@@ -1,12 +1,12 @@
 import { Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useCorlos } from "../../hooks/use-colors";
+import { useColors } from "../../hooks/use-colors";
 interface RoundCounterProps {
   roundCount: number;
 }
 
 export const RoundCounter = ({ roundCount }: RoundCounterProps) => {
-  const { gold, lightPrimary } = useCorlos();
+  const { gold, lightPrimary } = useColors();
 
   const arrayColors = [lightPrimary, gold];
 

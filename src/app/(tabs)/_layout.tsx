@@ -1,8 +1,8 @@
-import { useCorlos } from "@/hooks/use-colors";
+import { useColors } from "@/hooks/use-colors";
 import { Tabs } from "expo-router";
 
 export default function Layout() {
-  const { background } = useCorlos();
+  const { background } = useColors();
   return (
     <Tabs
       screenOptions={{

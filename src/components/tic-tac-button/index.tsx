@@ -1,4 +1,4 @@
-import { useCorlos } from "@/hooks/use-colors";
+import { useColors } from "@/hooks/use-colors";
 import { Pressable } from "react-native";
 
 interface TicTacToeButtonProps {
@@ -6,7 +6,7 @@ interface TicTacToeButtonProps {
 }
 
 export const TicTacToeButton = ({ onPress }: TicTacToeButtonProps) => {
-  const { secundary } = useCorlos();
+  const { secundary } = useColors();
   return (
     <Pressable
       style={({ pressed }) => [

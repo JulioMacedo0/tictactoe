@@ -1,4 +1,4 @@
-import { useCorlos } from "@/hooks/use-colors";
+import { useColors } from "@/hooks/use-colors";
 import { Octicons } from "@expo/vector-icons";
 
 interface OProps {

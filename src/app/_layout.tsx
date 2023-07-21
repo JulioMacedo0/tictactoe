@@ -23,7 +23,15 @@ export default function Layout() {
       <Stack.Screen
         name="login"
         options={{
-          animation: "fade",
+          animation: "fade_from_bottom",
+          animationDuration: 300,
+        }}
+      />
+      <Stack.Screen
+        name="register"
+        options={{
+          animation: "fade_from_bottom",
+          animationDuration: 300,
         }}
       />
     </Stack>

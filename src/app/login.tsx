@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useColors } from "@hooks/use-colors";
-import { useState } from "react";
+import React, { useState } from "react";
 import { supabase } from "@/supabase/init";
 import { Card } from "@/components/card";
 import { Input } from "@/components/Input";
+import { Feather, MaterialIcons, Octicons } from "@expo/vector-icons";
 
 export default function Login() {
   const route = useRouter();
@@ -38,11 +39,14 @@ export default function Login() {
     <LinearGradient
       colors={[primary, secundary]}
       className="flex-1 items-center justify-center"
+      style={{
+        gap: 12,
+      }}
     >
       <StatusBar style="light" />
 
-      <Text>Email</Text>
       <Input
+        icon={<MaterialIcons name="email" size={24} color="white" />}
         variant="rose"
         placeholder="Enter your email"
         value={email}
@@ -51,8 +55,9 @@ export default function Login() {
         keyboardType="email-address"
         onChangeText={(text) => setEmail(text)}
       />
-      <Text style={{ marginTop: 15 }}>Password</Text>
+
       <Input
+        icon={<Octicons name="key" size={24} color="white" />}
         variant="rose"
         placeholder="Enter your password"
         value={password}
@@ -66,10 +71,10 @@ export default function Login() {
         variant="rose"
         onPress={login}
       />
-      <View className="flex-row">
-        <Text>Dont have account?</Text>
-        <TouchableOpacity>
-          <Text>Click here</Text>
+      <View className="flex-row ">
+        <Text className="text-white text-base ">Dont have account?</Text>
+        <TouchableOpacity onPress={() => route.replace("/register")}>
+          <Text className="text-primary text-base "> Click here</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>

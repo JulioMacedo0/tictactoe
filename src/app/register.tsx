@@ -14,6 +14,7 @@ export default function Register() {
 
   const { primary, secundary } = useColors();
 
+  const [userName, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,10 +25,7 @@ export default function Register() {
       email: email,
       password: password,
     });
-    if (!error && !data.user) {
-      setLoading(false);
-      alert("Check your email for the login link!");
-    }
+
     if (error) {
       setLoading(false);
       alert(error.message);
@@ -45,18 +43,18 @@ export default function Register() {
       <Input
         icon={<Feather name="user" size={24} color="white" />}
         variant="rose"
-        placeholder="Enter your full name"
-        value={email}
+        placeholder="Player name"
+        value={userName}
         autoCapitalize="none"
         autoCorrect={false}
         keyboardType="email-address"
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => setUserName(text)}
       />
 
       <Input
         icon={<MaterialIcons name="email" size={24} color="white" />}
         variant="rose"
-        placeholder="Enter your email"
+        placeholder="Email"
         value={email}
         autoCapitalize="none"
         autoCorrect={false}
@@ -67,7 +65,7 @@ export default function Register() {
       <Input
         icon={<Octicons name="key" size={24} color="white" />}
         variant="rose"
-        placeholder="Enter your password"
+        placeholder="Password"
         value={password}
         autoCapitalize="none"
         autoCorrect={false}

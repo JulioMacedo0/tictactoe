@@ -18,14 +18,12 @@ export default function Register() {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function login() {
+  async function register() {
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
-    console.log(data);
-    console.log(error);
     if (!error && !data.user) {
       setLoading(false);
       alert("Check your email for the login link!");
@@ -80,7 +78,7 @@ export default function Register() {
       <Card
         text={loading ? "Loading..." : "Create account"}
         variant="gold"
-        onPress={login}
+        onPress={register}
       />
       <View className="flex-row ">
         <Text className="text-white text-base "> have account?</Text>

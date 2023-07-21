@@ -23,7 +23,7 @@ export const Input: React.FC<InputProps> = ({ variant, icon, ...props }) => {
       style={{
         gap: 8,
       }}
-      className="w-[80%] h-[50px] rounded-3xl flex-row items-center px-4"
+      className="w-[80%] h-[50px] rounded-3xl flex-row items-center px-4  border-white border-2"
     >
       <View>{icon}</View>
       <TextInput

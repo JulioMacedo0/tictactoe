@@ -1,14 +1,39 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, TouchableOpacity } from "react-native";
+import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import { useColors } from "@hooks/use-colors";
+import { useState } from "react";
+import { supabase } from "@/supabase/init";
+import { Card } from "@/components/card";
+import { Input } from "@/components/Input";
 
 export default function Login() {
   const route = useRouter();
 
   const { primary, secundary } = useColors();
 
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  async function login() {
+    setLoading(true);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+    console.log(data);
+    console.log(error);
+    if (!error && !data.user) {
+      setLoading(false);
+      alert("Check your email for the login link!");
+    }
+    if (error) {
+      setLoading(false);
+      alert(error.message);
+    }
+  }
   return (
     <LinearGradient
       colors={[primary, secundary]}
@@ -16,16 +41,37 @@ export default function Login() {
     >
       <StatusBar style="light" />
 
-      <Text className="text-white text-4xl mb-8">Tic Tac </Text>
-
-      <TouchableOpacity
-        className="bg-white  w-[60%] px-4 py-2 rounded-full"
-        onPress={() => route.replace("/home")}
-      >
-        <Text className="text-black text-center text-lg font-bold ">
-          sig in
-        </Text>
-      </TouchableOpacity>
+      <Text>Email</Text>
+      <Input
+        variant="rose"
+        placeholder="Enter your email"
+        value={email}
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="email-address"
+        onChangeText={(text) => setEmail(text)}
+      />
+      <Text style={{ marginTop: 15 }}>Password</Text>
+      <Input
+        variant="rose"
+        placeholder="Enter your password"
+        value={password}
+        autoCapitalize="none"
+        autoCorrect={false}
+        secureTextEntry={true}
+        onChangeText={(text) => setPassword(text)}
+      />
+      <Card
+        text={loading ? "Loading..." : "Log in"}
+        variant="rose"
+        onPress={login}
+      />
+      <View className="flex-row">
+        <Text>Dont have account?</Text>
+        <TouchableOpacity>
+          <Text>Click here</Text>
+        </TouchableOpacity>
+      </View>
     </LinearGradient>
   );
 }

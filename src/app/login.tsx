@@ -26,9 +26,10 @@ export default function Login() {
     });
     console.log(data);
     console.log(error);
-    if (!error && !data.user) {
+
+    if (!error && data.session) {
       setLoading(false);
-      alert("Check your email for the login link!");
+      route.replace("/home");
     }
     if (error) {
       setLoading(false);
@@ -48,7 +49,7 @@ export default function Login() {
       <Input
         icon={<MaterialIcons name="email" size={24} color="white" />}
         variant="rose"
-        placeholder="Enter your email"
+        placeholder="Email"
         value={email}
         autoCapitalize="none"
         autoCorrect={false}
@@ -59,7 +60,7 @@ export default function Login() {
       <Input
         icon={<Octicons name="key" size={24} color="white" />}
         variant="rose"
-        placeholder="Enter your password"
+        placeholder="Password"
         value={password}
         autoCapitalize="none"
         autoCorrect={false}

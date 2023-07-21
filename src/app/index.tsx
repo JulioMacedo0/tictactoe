@@ -1,6 +1,26 @@
+import { supabase } from "@/supabase/init";
+import { Session } from "@supabase/supabase-js";
 import { Redirect } from "expo-router";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  const useAuth = false;
-  return useAuth ? <Redirect href="home" /> : <Redirect href="login" />;
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const isLogged = session.user && session;
+      console.log(isLogged);
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+  if (session && session.user) {
+    return <Redirect href="home" />;
+  } else {
+    <Redirect href="login" />;
+  }
 }

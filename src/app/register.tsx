@@ -79,7 +79,7 @@ export default function Register() {
 
       <Card
         text={loading ? "Loading..." : "Create account"}
-        variant="rose"
+        variant="gold"
         onPress={login}
       />
       <View className="flex-row ">

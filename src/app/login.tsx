@@ -68,7 +68,7 @@ export default function Login() {
       />
       <Card
         text={loading ? "Loading..." : "Log in"}
-        variant="rose"
+        variant="gold"
         onPress={login}
       />
       <View className="flex-row ">

@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { useColors } from "@hooks/use-colors";
 import { useState } from "react";
 import { supabase } from "@/supabase/init";
@@ -10,8 +10,6 @@ import { Input } from "@/components/Input";
 import { Feather, MaterialIcons, Octicons } from "@expo/vector-icons";
 
 export default function Register() {
-  const route = useRouter();
-
   const { primary, secundary } = useColors();
 
   const [userName, setUserName] = useState<string>("");
@@ -80,7 +78,7 @@ export default function Register() {
       />
       <View className="flex-row ">
         <Text className="text-white text-base "> have account?</Text>
-        <TouchableOpacity onPress={() => route.replace("/login")}>
+        <TouchableOpacity onPress={() => router.replace("/login")}>
           <Text className="text-primary text-base "> Click here</Text>
         </TouchableOpacity>
       </View>

@@ -8,8 +8,9 @@ export default function Page() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      const isLogged = session.user && session;
+      const isLogged = session && session.user;
       console.log(isLogged);
+
       setSession(session);
     });
 
@@ -21,6 +22,6 @@ export default function Page() {
   if (session && session.user) {
     return <Redirect href="home" />;
   } else {
-    <Redirect href="login" />;
+    return <Redirect href="login" />;
   }
 }

@@ -17,12 +17,22 @@ export default function Register() {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function register() {
+  async function handleRegister() {
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          userName,
+        },
+      },
     });
+
+    if (data.session) {
+      console.log(data.user.user_metadata);
+      router.replace("home");
+    }
 
     if (error) {
       setLoading(false);
@@ -74,7 +84,7 @@ export default function Register() {
       <Card
         text={loading ? "Loading..." : "Create account"}
         variant="gold"
-        onPress={register}
+        onPress={handleRegister}
       />
       <View className="flex-row ">
         <Text className="text-white text-base "> have account?</Text>

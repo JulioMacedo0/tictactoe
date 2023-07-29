@@ -1,7 +1,5 @@
 import { supabase } from "@/supabase/init";
-import { Session } from "@supabase/supabase-js";
-import { Redirect } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { router } from "expo-router";
 export default function Page() {
   useEffect(() => {

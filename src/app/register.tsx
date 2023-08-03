@@ -88,7 +88,7 @@ export default function Register() {
       />
       <View className="flex-row ">
         <Text className="text-white text-base "> have account?</Text>
-        <TouchableOpacity onPress={() => router.replace("/login")}>
+        <TouchableOpacity onPress={() => router.back()}>
           <Text className="text-primary text-base "> Click here</Text>
         </TouchableOpacity>
       </View>

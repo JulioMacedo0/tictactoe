@@ -1,8 +1,21 @@
+import { Provider, useAuth } from "@/context/authContext";
 import { useColors } from "@/hooks/use-colors";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect } from "react";
 
 export default function Layout() {
+  return (
+    <Provider>
+      <RootLayoutNav />
+    </Provider>
+  );
+}
+
+function RootLayoutNav() {
   const { background } = useColors();
+  const { authInitialized, user } = useAuth();
+
+  if (!authInitialized && !user) return null;
   return (
     <Stack
       screenOptions={{
@@ -21,14 +34,14 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
-        name="login"
+        name="(auth)/login"
         options={{
           animation: "fade_from_bottom",
           animationDuration: 300,
         }}
       />
       <Stack.Screen
-        name="register"
+        name="(auth)/register"
         options={{
           animation: "fade_from_bottom",
           animationDuration: 300,

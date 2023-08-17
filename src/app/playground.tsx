@@ -8,21 +8,33 @@ import { useEffect, useState } from "react";
 
 import { View } from "react-native";
 
+interface User {
+  useName: string;
+  userId: string;
+  userPicture: string;
+}
+
 function PlayGround() {
   const { user } = useAuth();
   console.log("PlayGround render");
   const [channel, setChannel] = useState(
     supabase.channel("lobby", {
       config: {
+        presence: {
+          key: `${user.id}`,
+        },
+
         broadcast: {
           ack: true,
         },
       },
     })
   );
+  const [isGame, setIsGame] = useState(false);
+  const [lobbyUsers, setLobbyUsers] = useState([] as User[]);
 
-  const cleanSubscribe = async () => {
-    console.log(`cleanSubscribe channel state: ${channel.state}`);
+  const cleanEvents = async () => {
+    await untrackPresence();
     const resp = await channel.unsubscribe();
     console.log(`${user.user_metadata.username} exit subscribe is: ${resp}`);
   };
@@ -40,22 +52,66 @@ function PlayGround() {
     console.log(`send message from ${user.user_metadata.username} : ${resp}`);
   };
 
+  const sendInivite = async () => {
+    console.log(`sendInivite `);
+    const resp = await channel.send({
+      type: "broadcast",
+      event: "invite",
+      payload: {
+        id: `${user.id}`,
+      },
+    });
+
+    console.log(`send message from ${user.user_metadata.username} : ${resp}`);
+  };
+
+  const untrackPresence = async () => {
+    const presenceUntrackStatus = await channel.untrack();
+    console.log(presenceUntrackStatus);
+  };
+
   useEffect(() => {
     console.log("useEffect runs");
 
     const channelResp = channel
-      .on("broadcast", { event: "tic-tac" }, ({ payload }) =>
-        alert(payload.message)
+      .on("broadcast", { event: `${user.id}` }, ({ payload }) =>
+        alert(`${payload.user} inivite you for a game`)
       )
-      .subscribe((status) =>
+      .on("broadcast", { event: "invite" }, ({ payload }) => {
+        alert(payload.id);
+      })
+      .on("presence", { event: "sync" }, () => {
+        const newState = channel.presenceState();
+        console.log(`event sync from ${user.user_metadata.username}`, newState);
+      })
+      .on("presence", { event: "join" }, ({ key, newPresences }) => {
         console.log(
-          `${user.user_metadata.username} subscribe channel => ${status}`
-        )
-      );
+          `event join from ${user.user_metadata.username} =>`,
+          newPresences
+        );
+      })
+      .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
+        console.log(
+          `event leave from ${user.user_metadata.username} =>`,
+          leftPresences
+        );
+      })
+      .subscribe(async (status) => {
+        if (status === "SUBSCRIBED") {
+          const presenceTrackStatus = await channel.track({
+            userName: `${user.user_metadata.username}`,
+            userId: `${user.id}`,
+            userPicture: "",
+          });
+          console.log(
+            `presenceTrackStatus from ${user.user_metadata.username} is :${presenceTrackStatus}`
+          );
+        }
+      });
     setChannel(channelResp);
 
     return () => {
-      cleanSubscribe();
+      cleanEvents();
     };
   }, []);
 
@@ -77,6 +133,7 @@ function PlayGround() {
         />
       </View>
       <Card text="Send msg" variant="gold" onPress={() => sendMsg()} />
+      <Card text="Send inivite" variant="gold" onPress={() => sendInivite()} />
       <TicTacToe />
     </View>
   );

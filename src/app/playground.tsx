@@ -84,15 +84,19 @@ function PlayGround() {
 
   const updateUser = (syncObj: Object) => {
     const keys = Object.keys(syncObj).filter((key) => key != user.id);
-    // if (user.id == userObj.userId) return;
-    // const users = lobbyUsers.map((userMap) => {
-    //   if (userMap.userId == userObj.userId) {
-    //     return userObj;
-    //   } else {
-    //     return userMap;
-    //   }
-    // });
-    // setLobbyUsers(users);
+
+    const users = new Array<User>();
+
+    for (let key of keys) {
+      console.log(`userSync UnitObjt`, syncObj[key][0]);
+      const userObj = {
+        userName: syncObj[key][0].userName,
+        userId: syncObj[key][0].userId,
+        userPicture: syncObj[key][0].userPicture,
+      };
+      users.push(userObj);
+    }
+    setLobbyUsers(users);
   };
 
   useEffect(() => {
@@ -105,6 +109,7 @@ function PlayGround() {
       .on("presence", { event: "sync" }, () => {
         const newState = channel.presenceState();
         console.log(`event sync from ${user.user_metadata.username}`, newState);
+        updateUser(newState);
       })
       .on("presence", { event: "join" }, ({ key, newPresences }) => {
         const userObj = {
@@ -135,10 +140,6 @@ function PlayGround() {
       cleanEvents();
     };
   }, []);
-
-  console.log(
-    lobbyUsers.forEach((t) => console.log(`lobby user ${t.userName}`))
-  );
 
   if (isGame) {
     return (

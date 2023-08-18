@@ -6,10 +6,10 @@ import { useAuth } from "@/context/authContext";
 import { supabase } from "@/supabase/init";
 import { useEffect, useState } from "react";
 
-import { View } from "react-native";
+import { View, Text, FlatList } from "react-native";
 
 interface User {
-  useName: string;
+  userName: string;
   userId: string;
   userPicture: string;
 }
@@ -30,6 +30,7 @@ function PlayGround() {
       },
     })
   );
+
   const [isGame, setIsGame] = useState(false);
   const [lobbyUsers, setLobbyUsers] = useState([] as User[]);
 
@@ -70,6 +71,30 @@ function PlayGround() {
     console.log(presenceUntrackStatus);
   };
 
+  const addUser = (userObj: User) => {
+    if (user.id == userObj.userId) return;
+    setLobbyUsers((users) => [...users, userObj]);
+  };
+
+  const removeUser = (id: string) => {
+    if (user.id == id) return;
+    const users = lobbyUsers.filter((user) => user.userId != id);
+    setLobbyUsers(users);
+  };
+
+  const updateUser = (syncObj: Object) => {
+    const keys = Object.keys(syncObj).filter((key) => key != user.id);
+    // if (user.id == userObj.userId) return;
+    // const users = lobbyUsers.map((userMap) => {
+    //   if (userMap.userId == userObj.userId) {
+    //     return userObj;
+    //   } else {
+    //     return userMap;
+    //   }
+    // });
+    // setLobbyUsers(users);
+  };
+
   useEffect(() => {
     console.log("useEffect runs");
 
@@ -77,24 +102,20 @@ function PlayGround() {
       .on("broadcast", { event: `${user.id}` }, ({ payload }) =>
         alert(`${payload.user} inivite you for a game`)
       )
-      .on("broadcast", { event: "invite" }, ({ payload }) => {
-        alert(payload.id);
-      })
       .on("presence", { event: "sync" }, () => {
         const newState = channel.presenceState();
         console.log(`event sync from ${user.user_metadata.username}`, newState);
       })
       .on("presence", { event: "join" }, ({ key, newPresences }) => {
-        console.log(
-          `event join from ${user.user_metadata.username} =>`,
-          newPresences
-        );
+        const userObj = {
+          userName: newPresences[0].userName,
+          userId: newPresences[0].userId,
+          userPicture: newPresences[0].userPicture,
+        };
+        addUser(userObj);
       })
       .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
-        console.log(
-          `event leave from ${user.user_metadata.username} =>`,
-          leftPresences
-        );
+        removeUser(leftPresences[0].userId);
       })
       .subscribe(async (status) => {
         if (status === "SUBSCRIBED") {
@@ -115,28 +136,47 @@ function PlayGround() {
     };
   }, []);
 
-  return (
-    <View className="flex-1 bg-background">
-      <View className="flex-row px-6 justify-between  mt-4">
-        <Profile
-          imageUrl="https://github.com/JulioMacedo0.png"
-          userName={`${user.user_metadata.username}`}
-          cardClasName="w-[120px] h-[135px]"
-          playWith="X"
+  console.log(
+    lobbyUsers.forEach((t) => console.log(`lobby user ${t.userName}`))
+  );
+
+  if (isGame) {
+    return (
+      <View className="flex-1 bg-background">
+        <View className="flex-row px-6 justify-between  mt-4">
+          <Profile
+            imageUrl="https://github.com/JulioMacedo0.png"
+            userName={`${user.user_metadata.username}`}
+            cardClasName="w-[120px] h-[135px]"
+            playWith="X"
+          />
+          <RoundCounter roundCount={1} />
+          <Profile
+            imageUrl="https://github.com/wendelfreitas.png"
+            userName="Wendel Freitas"
+            cardClasName="w-[120px] h-[135px]"
+            playWith="O"
+          />
+        </View>
+        <Card text="Send msg" variant="gold" onPress={() => sendMsg()} />
+        <Card
+          text="Send inivite"
+          variant="gold"
+          onPress={() => sendInivite()}
         />
-        <RoundCounter roundCount={1} />
-        <Profile
-          imageUrl="https://github.com/wendelfreitas.png"
-          userName="Wendel Freitas"
-          cardClasName="w-[120px] h-[135px]"
-          playWith="O"
+        <TicTacToe />
+      </View>
+    );
+  } else {
+    return (
+      <View className="flex-1 bg-background">
+        <FlatList
+          data={lobbyUsers}
+          renderItem={({ item }) => <Text>{item.userName}</Text>}
         />
       </View>
-      <Card text="Send msg" variant="gold" onPress={() => sendMsg()} />
-      <Card text="Send inivite" variant="gold" onPress={() => sendInivite()} />
-      <TicTacToe />
-    </View>
-  );
+    );
+  }
 }
 
 export default PlayGround;

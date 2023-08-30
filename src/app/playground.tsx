@@ -7,10 +7,11 @@ import { supabase } from "@/supabase/init";
 import { useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { View, Text, FlatList, Alert } from "react-native";
-import { CHANNEL_STATES } from "@/constants/supabase";
+import { CHANNEL_STATES, RESPONSE_INVITE } from "@/constants/supabase";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/use-colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { RealtimeChannel } from "@supabase/supabase-js";
 
 interface User {
   userName: string;
@@ -21,6 +22,10 @@ interface User {
 function PlayGround() {
   const { user } = useAuth();
   const { secundary, lightSecundary } = useColors();
+
+  const [battleChannel, setBattleChannel] = useState<RealtimeChannel | null>(
+    null
+  );
 
   const [channel, setChannel] = useState(
     supabase.channel("lobby", {
@@ -36,28 +41,63 @@ function PlayGround() {
     })
   );
 
-  const [isGame, setIsGame] = useState(false);
+  const isGame = !!battleChannel;
   const [lobbyUsers, setLobbyUsers] = useState([] as User[]);
 
   const cleanEvents = async () => {
     await untrackPresence();
-    const resp = await channel.unsubscribe();
-    console.log(`${user.user_metadata.username} exit subscribe is: ${resp}`);
+    const respLobby = await channel.unsubscribe();
+    const respBattle = await battleChannel?.unsubscribe();
+    console.log(`${user.user_metadata.username} exit lobby is: ${respLobby}`);
+    console.log(`${user.user_metadata.username} exit battle is: ${respBattle}`);
   };
 
-  const sendMsg = async () => {
-    console.log(`sendMsg channel state: ${channel.state}`);
+  const initBattleRoom = async (userId: string) => {
+    const respChannel = await supabase
+      .channel(userId, {
+        config: {
+          broadcast: {
+            ack: true,
+          },
+        },
+      })
+      .on("broadcast", { event: "tic-tac" }, ({ payload }) =>
+        console.log(payload)
+      )
+      .subscribe();
+
+    setBattleChannel(respChannel);
+  };
+
+  const rejectInvite = async (userId: string) => {
+    console.log(`userID : ${userId} >>>> ${user.id}`);
     const resp = await channel.send({
       type: "broadcast",
-      event: "tic-tac",
+      event: userId,
       payload: {
-        message: "hello, world",
+        invite: RESPONSE_INVITE.reject,
+        id: `${user.id}`,
+        userName: user.user_metadata.username,
       },
     });
-
-    console.log(`send message from ${user.user_metadata.username} : ${resp}`);
+    console.log(
+      `rejectInvite from ${user.user_metadata.username} is : ${resp}`
+    );
   };
-
+  const resolveInvite = async (userId: string) => {
+    const resp = await channel.send({
+      type: "broadcast",
+      event: userId,
+      payload: {
+        invite: RESPONSE_INVITE.resolve,
+        id: `${user.id}`,
+        userName: user.user_metadata.username,
+      },
+    });
+    if (resp === "ok") {
+      initBattleRoom(userId);
+    }
+  };
   const sendInivite = async ({
     userId,
     userName,
@@ -70,6 +110,7 @@ function PlayGround() {
       type: "broadcast",
       event: userId,
       payload: {
+        invite: RESPONSE_INVITE.invitation,
         id: `${user.id}`,
         userName,
       },
@@ -116,19 +157,37 @@ function PlayGround() {
       console.log(`Channel state is : ${channel.state}. Run subscriptions....`);
 
       const channelResp = channel
-        .on("broadcast", { event: `${user.id}` }, ({ payload }) =>
-          Alert.alert("Alert Title", "My Alert Msg", [
-            {
-              text: "Accept",
-              onPress: () => console.log("Ask me later pressed"),
-            },
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel",
-            },
-          ])
-        )
+        .on("broadcast", { event: `${user.id}` }, ({ payload }) => {
+          console.log(`====================>`, payload.id);
+          if (payload.invite == RESPONSE_INVITE.reject) {
+            Alert.alert(
+              "Invite Rejected",
+              `${payload.userName} reject your invite`
+            );
+          }
+
+          if (payload.invite == RESPONSE_INVITE.invitation) {
+            Alert.alert(
+              "Invite to battle",
+              `${payload.userName} inivite you for a battle`,
+              [
+                {
+                  text: "Accept",
+                  onPress: () => resolveInvite(payload.id),
+                },
+                {
+                  text: "Cancel",
+                  onPress: () => rejectInvite(payload.id),
+                  style: "cancel",
+                },
+              ]
+            );
+          }
+
+          if (payload.invite == RESPONSE_INVITE.resolve) {
+            initBattleRoom(user.id);
+          }
+        })
         .on("presence", { event: "sync" }, () => {
           const newState = channel.presenceState();
           updateUser(newState);

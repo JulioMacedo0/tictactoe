@@ -5,8 +5,12 @@ import { TicTacToe } from "@/components/tic-tac-toe";
 import { useAuth } from "@/context/authContext";
 import { supabase } from "@/supabase/init";
 import { useEffect, useState } from "react";
-
-import { View, Text, FlatList } from "react-native";
+import { Image } from "expo-image";
+import { View, Text, FlatList, Alert } from "react-native";
+import { CHANNEL_STATES } from "@/constants/supabase";
+import { LinearGradient } from "expo-linear-gradient";
+import { useColors } from "@/hooks/use-colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface User {
   userName: string;
@@ -16,7 +20,9 @@ interface User {
 
 function PlayGround() {
   const { user } = useAuth();
+  const { primary, lightPrimary } = useColors();
   console.log("PlayGround render");
+
   const [channel, setChannel] = useState(
     supabase.channel("lobby", {
       config: {
@@ -53,13 +59,20 @@ function PlayGround() {
     console.log(`send message from ${user.user_metadata.username} : ${resp}`);
   };
 
-  const sendInivite = async () => {
+  const sendInivite = async ({
+    userId,
+    userName,
+  }: {
+    userId: string;
+    userName: string;
+  }) => {
     console.log(`sendInivite `);
     const resp = await channel.send({
       type: "broadcast",
-      event: "invite",
+      event: userId,
       payload: {
         id: `${user.id}`,
+        userName,
       },
     });
 
@@ -73,22 +86,21 @@ function PlayGround() {
 
   const addUser = (userObj: User) => {
     if (user.id == userObj.userId) return;
+    console.log(`addUser from ${user.user_metadata.username}`, userObj);
     setLobbyUsers((users) => [...users, userObj]);
   };
 
   const removeUser = (id: string) => {
     if (user.id == id) return;
     const users = lobbyUsers.filter((user) => user.userId != id);
+    console.log(`removeUser from ${user.user_metadata.username}`, users);
     setLobbyUsers(users);
   };
 
   const updateUser = (syncObj: Object) => {
     const keys = Object.keys(syncObj).filter((key) => key != user.id);
-
     const users = new Array<User>();
-
     for (let key of keys) {
-      console.log(`userSync UnitObjt`, syncObj[key][0]);
       const userObj = {
         userName: syncObj[key][0].userName,
         userId: syncObj[key][0].userId,
@@ -96,50 +108,64 @@ function PlayGround() {
       };
       users.push(userObj);
     }
+    console.log(`updateUser from ${user.user_metadata.username}`, users);
     setLobbyUsers(users);
   };
 
   useEffect(() => {
-    console.log("useEffect runs");
+    if (channel.state === CHANNEL_STATES.closed) {
+      console.log(`Channel state is : ${channel.state}. Run subscriptions....`);
 
-    const channelResp = channel
-      .on("broadcast", { event: `${user.id}` }, ({ payload }) =>
-        alert(`${payload.user} inivite you for a game`)
-      )
-      .on("presence", { event: "sync" }, () => {
-        const newState = channel.presenceState();
-        console.log(`event sync from ${user.user_metadata.username}`, newState);
-        updateUser(newState);
-      })
-      .on("presence", { event: "join" }, ({ key, newPresences }) => {
-        const userObj = {
-          userName: newPresences[0].userName,
-          userId: newPresences[0].userId,
-          userPicture: newPresences[0].userPicture,
-        };
-        addUser(userObj);
-      })
-      .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
-        removeUser(leftPresences[0].userId);
-      })
-      .subscribe(async (status) => {
-        if (status === "SUBSCRIBED") {
-          const presenceTrackStatus = await channel.track({
-            userName: `${user.user_metadata.username}`,
-            userId: `${user.id}`,
-            userPicture: "",
-          });
-          console.log(
-            `presenceTrackStatus from ${user.user_metadata.username} is :${presenceTrackStatus}`
-          );
-        }
-      });
-    setChannel(channelResp);
+      const channelResp = channel
+        .on("broadcast", { event: `${user.id}` }, ({ payload }) =>
+          Alert.alert("Alert Title", "My Alert Msg", [
+            {
+              text: "Accept",
+              onPress: () => console.log("Ask me later pressed"),
+            },
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+          ])
+        )
+        .on("presence", { event: "sync" }, () => {
+          const newState = channel.presenceState();
+          updateUser(newState);
+        })
+        .on("presence", { event: "join" }, ({ key, newPresences }) => {
+          const userObj = {
+            userName: newPresences[0].userName,
+            userId: newPresences[0].userId,
+            userPicture: newPresences[0].userPicture,
+          };
+          addUser(userObj);
+        })
+        .on("presence", { event: "leave" }, ({ key, leftPresences }) => {
+          removeUser(leftPresences[0].userId);
+        })
+        .subscribe(async (status) => {
+          if (status === "SUBSCRIBED") {
+            const presenceTrackStatus = await channel.track({
+              userName: `${user.user_metadata.username}`,
+              userId: `${user.id}`,
+              userPicture: "",
+            });
+            console.log(
+              `presenceTrackStatus from ${user.user_metadata.username} is :${presenceTrackStatus}`
+            );
+          }
+        });
+      setChannel(channelResp);
 
-    return () => {
-      cleanEvents();
-    };
+      return () => {
+        cleanEvents();
+      };
+    }
   }, []);
+
+  console.log(`${user.user_metadata.username} render all`, lobbyUsers);
 
   if (isGame) {
     return (
@@ -159,12 +185,6 @@ function PlayGround() {
             playWith="O"
           />
         </View>
-        <Card text="Send msg" variant="gold" onPress={() => sendMsg()} />
-        <Card
-          text="Send inivite"
-          variant="gold"
-          onPress={() => sendInivite()}
-        />
         <TicTacToe />
       </View>
     );
@@ -172,8 +192,46 @@ function PlayGround() {
     return (
       <View className="flex-1 bg-background">
         <FlatList
+          className="w-full "
           data={lobbyUsers}
-          renderItem={({ item }) => <Text>{item.userName}</Text>}
+          renderItem={({ item }) => (
+            <LinearGradient
+              className="flex-1 h-16 w-4/5 bg-white mt-4 mx-auto rounded-xl overflow-hidden items-center justify-between flex-row"
+              colors={[lightPrimary, primary]}
+            >
+              <Image
+                className="w-1/5 h-16"
+                source={"https://github.com/JulioMacedo0.png"}
+                contentFit="contain"
+                onError={(err) => {
+                  console.log(err);
+                }}
+                onProgress={(event) => {
+                  console.log(event);
+                }}
+                transition={1000}
+              />
+
+              <Text className="text-base text-center font-bold text-black mx-auto">
+                {item.userName}
+              </Text>
+              <View className="w-1/5 h-16 border-e-red-50">
+                <TouchableOpacity
+                  className="h-full w-full items-center bg-slate-600"
+                  onPress={() =>
+                    sendInivite({
+                      userId: item.userId,
+                      userName: user.user_metadata.username,
+                    })
+                  }
+                >
+                  <Text className="text-base text-center font-bold text-black my-auto">
+                    Invite
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
+          )}
         />
       </View>
     );

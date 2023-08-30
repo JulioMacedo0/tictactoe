@@ -5,3 +5,9 @@ export enum CHANNEL_STATES {
   joining = "joining",
   leaving = "leaving",
 }
+
+export enum RESPONSE_INVITE {
+  resolve = "resolve",
+  reject = "reject",
+  invitation = "invitation",
+}

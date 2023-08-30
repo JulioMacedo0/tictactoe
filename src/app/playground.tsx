@@ -20,8 +20,7 @@ interface User {
 
 function PlayGround() {
   const { user } = useAuth();
-  const { primary, lightPrimary } = useColors();
-  console.log("PlayGround render");
+  const { secundary, lightSecundary } = useColors();
 
   const [channel, setChannel] = useState(
     supabase.channel("lobby", {
@@ -192,13 +191,11 @@ function PlayGround() {
     return (
       <View className="flex-1 bg-background">
         <FlatList
-          className="w-full "
+          ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
+          className="w-full mt-4 "
           data={lobbyUsers}
           renderItem={({ item }) => (
-            <LinearGradient
-              className="flex-1 h-16 w-4/5 bg-white mt-4 mx-auto rounded-xl overflow-hidden items-center justify-between flex-row"
-              colors={[lightPrimary, primary]}
-            >
+            <View className="flex-1 h-16 w-4/5 bg-white mx-auto rounded-xl overflow-hidden items-center justify-between flex-row">
               <Image
                 className="w-1/5 h-16"
                 source={"https://github.com/JulioMacedo0.png"}
@@ -215,9 +212,12 @@ function PlayGround() {
               <Text className="text-base text-center font-bold text-black mx-auto">
                 {item.userName}
               </Text>
-              <View className="w-1/5 h-16 border-e-red-50">
+              <LinearGradient
+                className="w-1/5 h-16 bg-secundary"
+                colors={[secundary, lightSecundary]}
+              >
                 <TouchableOpacity
-                  className="h-full w-full items-center bg-slate-600"
+                  className="h-full w-full items-center "
                   onPress={() =>
                     sendInivite({
                       userId: item.userId,
@@ -225,12 +225,12 @@ function PlayGround() {
                     })
                   }
                 >
-                  <Text className="text-base text-center font-bold text-black my-auto">
+                  <Text className="text-base text-center font-bold text-white my-auto">
                     Invite
                   </Text>
                 </TouchableOpacity>
-              </View>
-            </LinearGradient>
+              </LinearGradient>
+            </View>
           )}
         />
       </View>

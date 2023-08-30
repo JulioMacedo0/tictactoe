@@ -215,6 +215,8 @@ function PlayGround() {
               <LinearGradient
                 className="w-1/5 h-16 bg-secundary"
                 colors={[secundary, lightSecundary]}
+                start={{ x: -1, y: 0 }}
+                end={{ x: 1, y: 0 }}
               >
                 <TouchableOpacity
                   className="h-full w-full items-center "

@@ -55,7 +55,6 @@ export function Provider(props: ProviderProps) {
     const navigationState = useRootNavigationState();
 
     useEffect(() => {
-      console.log(`1º useEffect authInitialized: ${authInitialized}`);
       if (!navigationState?.key || !authInitialized) return;
 
       const inAuthGroup = segments[0] === "(auth)";
@@ -66,21 +65,17 @@ export function Provider(props: ProviderProps) {
         !inAuthGroup
       ) {
         // Redirect to the sign-in page.
-        console.log("auto router to Login");
         router.replace("/login");
       } else if (user && inAuthGroup) {
         // Redirect away from the sign-in page.
-        console.log("auto router to Home");
         router.replace("/(tabs)/home");
       }
     }, [user, segments, authInitialized, navigationState?.key]);
   };
 
   useEffect(() => {
-    console.log(`2º useEffect authInitialized: ${authInitialized}`);
     if (authInitialized) return;
     supabase.auth.onAuthStateChange((event, session) => {
-      console.log("got user", session?.user?.email);
       setAuthInitialized(true);
       setAuth(session?.user || null);
       session?.user?.email && router.replace("/(tabs)/home");
@@ -154,7 +149,7 @@ export function Provider(props: ProviderProps) {
       if (error) throw error;
 
       const { data, error: updateErr } = await supabase.auth.updateUser({
-        data: { username },
+        data: { username, userPicture: "" },
       });
       if (updateErr) throw updateErr;
 

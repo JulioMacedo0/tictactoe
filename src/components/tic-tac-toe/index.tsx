@@ -1,22 +1,29 @@
 import { useColors } from "@/hooks/use-colors";
 import { View, StyleSheet } from "react-native";
 import { TicTacToeButton } from "@/components/tic-tac-button";
-import { useState } from "react";
-import { Boad, BoardValue } from "@/@types/game";
+import { Game, BoardValue } from "@/@types/game";
+import { getTurn } from "@/helpers/get-turn";
 
 type TicTacToeProps = {
   playWith: "X" | "O";
-  board: Boad;
-  setBoad: (value: React.SetStateAction<Boad>) => void;
-  sendEvent: (position: number, value: BoardValue) => Promise<void>;
+  game: Game;
+  setGame: (value: React.SetStateAction<Game>) => void;
+  sendEvent: (
+    position: number,
+    value: BoardValue,
+    turn: BoardValue
+  ) => Promise<void>;
 };
+
+const alertTurMessage = "Its not your turn";
 
 export const TicTacToe = ({
   playWith,
-  board,
-  setBoad,
+  game,
+  setGame,
   sendEvent,
 }: TicTacToeProps) => {
+  console.log(game.board[1]);
   return (
     <View className="h-[40%] w-[90%] mx-auto mt-8">
       <View
@@ -25,72 +32,108 @@ export const TicTacToe = ({
       >
         <View className="flex-1 flex-row rounded-t-2xl overflow-hidden">
           <TicTacToeButton
-            icon={board[1]}
+            icon={game.board[1]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 1: playWith }));
-              sendEvent(1, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 1: playWith }));
+                sendEvent(1, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
           <TicTacToeButton
-            icon={board[2]}
+            icon={game.board[2]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 2: playWith }));
-              sendEvent(2, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 2: playWith }));
+                sendEvent(2, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
           <TicTacToeButton
-            icon={board[3]}
+            icon={game.board[3]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 3: playWith }));
-              sendEvent(3, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 3: playWith }));
+                sendEvent(3, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
         </View>
 
         <View className="flex-1  flex-row ">
           <TicTacToeButton
-            icon={board[4]}
+            icon={game.board[4]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 4: playWith }));
-              sendEvent(4, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 4: playWith }));
+                sendEvent(4, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
           <TicTacToeButton
-            icon={board[5]}
+            icon={game.board[5]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 5: playWith }));
-              sendEvent(5, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 5: playWith }));
+                sendEvent(5, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
           <TicTacToeButton
-            icon={board[6]}
+            icon={game.board[6]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 6: playWith }));
-              sendEvent(6, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 6: playWith }));
+                sendEvent(6, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
         </View>
 
         <View className="flex-1 flex-row rounded-b-2xl overflow-hidden">
           <TicTacToeButton
-            icon={board[7]}
+            icon={game.board[7]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 7: playWith }));
-              sendEvent(7, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 7: playWith }));
+                sendEvent(7, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
           <TicTacToeButton
-            icon={board[8]}
+            icon={game.board[8]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 8: playWith }));
-              sendEvent(8, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 8: playWith }));
+                sendEvent(8, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
           <TicTacToeButton
-            icon={board[9]}
+            icon={game.board[9]}
             onPress={() => {
-              setBoad((prev) => ({ ...prev, 9: playWith }));
-              sendEvent(9, playWith);
+              if (game.turn == playWith) {
+                setGame((prev) => ({ ...prev, 9: playWith }));
+                sendEvent(9, playWith, getTurn(playWith));
+              } else {
+                alert(alertTurMessage);
+              }
             }}
           />
         </View>

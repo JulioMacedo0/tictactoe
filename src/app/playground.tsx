@@ -12,6 +12,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/use-colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { RealtimeChannel } from "@supabase/supabase-js";
+import { getPlayer } from "@/helpers/get-player";
+import { Boad } from "@/@types/game";
 
 interface User {
   userName: string;
@@ -21,12 +23,13 @@ interface User {
 
 function PlayGround() {
   const { user } = useAuth();
+  console.log(`console log poggers do ${user.user_metadata.username} `, user);
   const { secundary, lightSecundary } = useColors();
 
   const [battleChannel, setBattleChannel] = useState<RealtimeChannel | null>(
     null
   );
-
+  console.log("battle channel topic: ", battleChannel?.topic);
   const [channel, setChannel] = useState(
     supabase.channel("lobby", {
       config: {
@@ -40,6 +43,19 @@ function PlayGround() {
       },
     })
   );
+
+  const [board, setBoard] = useState<Boad>({
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+  });
+
+  const [opponent, setOpponent] = useState<User | null>(null);
 
   const isGame = !!battleChannel;
   const [lobbyUsers, setLobbyUsers] = useState([] as User[]);
@@ -70,7 +86,6 @@ function PlayGround() {
   };
 
   const rejectInvite = async (userId: string) => {
-    console.log(`userID : ${userId} >>>> ${user.id}`);
     const resp = await channel.send({
       type: "broadcast",
       event: userId,
@@ -84,7 +99,7 @@ function PlayGround() {
       `rejectInvite from ${user.user_metadata.username} is : ${resp}`
     );
   };
-  const resolveInvite = async (userId: string) => {
+  const resolveInvite = async (userId: string, userOppenet: User) => {
     const resp = await channel.send({
       type: "broadcast",
       event: userId,
@@ -92,10 +107,12 @@ function PlayGround() {
         invite: RESPONSE_INVITE.resolve,
         id: `${user.id}`,
         userName: user.user_metadata.username,
+        userPicture: user.user_metadata.userPicture,
       },
     });
     if (resp === "ok") {
       initBattleRoom(userId);
+      setOpponent(userOppenet);
     }
   };
   const sendInivite = async ({
@@ -113,6 +130,7 @@ function PlayGround() {
         invite: RESPONSE_INVITE.invitation,
         id: `${user.id}`,
         userName,
+        userPicture: user.app_metadata.userPicture,
       },
     });
 
@@ -173,7 +191,12 @@ function PlayGround() {
               [
                 {
                   text: "Accept",
-                  onPress: () => resolveInvite(payload.id),
+                  onPress: () =>
+                    resolveInvite(payload.id, {
+                      userId: payload.id,
+                      userName: payload.userName,
+                      userPicture: payload.userPicture,
+                    }),
                 },
                 {
                   text: "Cancel",
@@ -186,6 +209,11 @@ function PlayGround() {
 
           if (payload.invite == RESPONSE_INVITE.resolve) {
             initBattleRoom(user.id);
+            setOpponent({
+              userId: payload.userId,
+              userName: payload.userName,
+              userPicture: payload.userPicture,
+            });
           }
         })
         .on("presence", { event: "sync" }, () => {
@@ -233,17 +261,21 @@ function PlayGround() {
             imageUrl="https://github.com/JulioMacedo0.png"
             userName={`${user.user_metadata.username}`}
             cardClasName="w-[120px] h-[135px]"
-            playWith="X"
+            playWith={getPlayer(battleChannel.topic, user.id)}
           />
           <RoundCounter roundCount={1} />
           <Profile
             imageUrl="https://github.com/wendelfreitas.png"
-            userName="Wendel Freitas"
+            userName={opponent.userName}
             cardClasName="w-[120px] h-[135px]"
-            playWith="O"
+            playWith={getPlayer(battleChannel.topic, opponent.userId)}
           />
         </View>
-        <TicTacToe />
+        <TicTacToe
+          playWith={getPlayer(battleChannel.topic, user.id)}
+          board={board}
+          setBoad={setBoard}
+        />
       </View>
     );
   } else {

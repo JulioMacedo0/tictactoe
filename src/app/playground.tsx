@@ -13,7 +13,7 @@ import { useColors } from "@/hooks/use-colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { getPlayer } from "@/helpers/get-player";
-import { Boad, BoardValue } from "@/@types/game";
+import { BoardValue, Game } from "@/@types/game";
 
 interface User {
   userName: string;
@@ -44,15 +44,18 @@ function PlayGround() {
     })
   );
 
-  const [board, setBoard] = useState<Boad>({
-    1: null,
-    2: null,
-    3: null,
-    4: null,
-    5: null,
-    6: null,
-    7: null,
-    8: null,
+  const [game, setGame] = useState<Game>({
+    turn: "X",
+    board: {
+      1: null,
+      2: null,
+      3: null,
+      4: null,
+      5: null,
+      6: null,
+      7: null,
+      8: null,
+    },
   });
 
   const [opponent, setOpponent] = useState<User | null>(null);
@@ -80,18 +83,24 @@ function PlayGround() {
       .on("broadcast", { event: "tic-tac" }, ({ payload }) => {
         const position = payload.position;
         const value = payload.value;
-        setBoard((prev) => ({ ...prev, [position]: value }));
+        const turn = payload.turn;
+        setGame((prev) => ({ ...prev, [position]: value, turn }));
       })
       .subscribe();
 
     setBattleChannel(respChannel);
   };
 
-  const sendBoardValue = async (position: number, value: BoardValue) => {
+  const sendGameValue = async (
+    position: number,
+    value: BoardValue,
+    turn: BoardValue
+  ) => {
     const resp = await battleChannel.send({
       type: "broadcast",
       event: "tic-tac",
       payload: {
+        turn,
         position,
         value,
       },
@@ -285,9 +294,9 @@ function PlayGround() {
         </View>
         <TicTacToe
           playWith={getPlayer(battleChannel.topic, user.id)}
-          board={board}
-          setBoad={setBoard}
-          sendEvent={sendBoardValue}
+          game={game}
+          setGame={setGame}
+          sendEvent={sendGameValue}
         />
       </View>
     );
@@ -296,7 +305,7 @@ function PlayGround() {
       <View className="flex-1 bg-background">
         <FlatList
           ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-          className="w-full mt-4 "
+          className="w-full mt-4"
           data={lobbyUsers}
           renderItem={({ item }) => (
             <View className="flex-1 h-16 w-4/5 bg-white mx-auto rounded-xl overflow-hidden items-center justify-between flex-row">

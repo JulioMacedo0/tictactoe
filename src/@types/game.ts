@@ -12,6 +12,7 @@ export type Board = {
   6: BoardValue;
   7: BoardValue;
   8: BoardValue;
+  9: BoardValue;
 };
 
 export type BoardValue = null | "X" | "O";

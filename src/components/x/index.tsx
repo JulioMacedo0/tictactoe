@@ -6,5 +6,7 @@ interface XProps {
 }
 export const X = ({ size }: XProps) => {
   const { gold } = useColors();
-  return <Entypo name="cross" size={size} color={gold} />;
+  return (
+    <Entypo name="cross" size={size} color={gold} className="h-full w-full" />
+  );
 };

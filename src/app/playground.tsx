@@ -23,13 +23,10 @@ interface User {
 
 function PlayGround() {
   const { user } = useAuth();
-  console.log(`console log poggers do ${user.user_metadata.username} `, user);
   const { secundary, lightSecundary } = useColors();
-
   const [battleChannel, setBattleChannel] = useState<RealtimeChannel | null>(
     null
   );
-  console.log("battle channel topic: ", battleChannel?.topic);
   const [channel, setChannel] = useState(
     supabase.channel("lobby", {
       config: {

@@ -13,7 +13,7 @@ import { useColors } from "@/hooks/use-colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { getPlayer } from "@/helpers/get-player";
-import { Boad } from "@/@types/game";
+import { Boad, BoardValue } from "@/@types/game";
 
 interface User {
   userName: string;
@@ -77,12 +77,25 @@ function PlayGround() {
           },
         },
       })
-      .on("broadcast", { event: "tic-tac" }, ({ payload }) =>
-        console.log(payload)
-      )
+      .on("broadcast", { event: "tic-tac" }, ({ payload }) => {
+        const position = payload.position;
+        const value = payload.value;
+        setBoard((prev) => ({ ...prev, [position]: value }));
+      })
       .subscribe();
 
     setBattleChannel(respChannel);
+  };
+
+  const sendBoardValue = async (position: number, value: BoardValue) => {
+    const resp = await battleChannel.send({
+      type: "broadcast",
+      event: "tic-tac",
+      payload: {
+        position,
+        value,
+      },
+    });
   };
 
   const rejectInvite = async (userId: string) => {
@@ -274,6 +287,7 @@ function PlayGround() {
           playWith={getPlayer(battleChannel.topic, user.id)}
           board={board}
           setBoad={setBoard}
+          sendEvent={sendBoardValue}
         />
       </View>
     );

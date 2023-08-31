@@ -1,4 +1,9 @@
-export type Boad = {
+export type Game = {
+  turn: BoardValue;
+  board: Board;
+};
+
+export type Board = {
   1: BoardValue;
   2: BoardValue;
   3: BoardValue;

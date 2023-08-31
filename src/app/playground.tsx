@@ -122,7 +122,6 @@ function PlayGround() {
     userId: string;
     userName: string;
   }) => {
-    console.log(`sendInivite `);
     const resp = await channel.send({
       type: "broadcast",
       event: userId,

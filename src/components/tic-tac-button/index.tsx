@@ -18,11 +18,13 @@ export const TicTacToeButton = ({ onPress, icon }: TicTacToeButtonProps) => {
           opacity: pressed ? 0.8 : null,
           backgroundColor: secundary,
           flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
         },
       ]}
       onPress={onPress}
     >
-      {icon == "X" ? <X size={45} /> : icon == "O" ? <O size={45} /> : null}
+      {icon == "X" ? <X size={100} /> : icon == "O" ? <O size={80} /> : null}
     </Pressable>
   );
 };

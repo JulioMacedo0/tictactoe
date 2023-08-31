@@ -23,7 +23,6 @@ export const TicTacToe = ({
   setGame,
   sendEvent,
 }: TicTacToeProps) => {
-  console.log(game.board[1]);
   return (
     <View className="h-[40%] w-[90%] mx-auto mt-8">
       <View
@@ -34,8 +33,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[1]}
             onPress={() => {
+              if (game.board[1]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 1: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 1: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(1, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -45,8 +49,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[2]}
             onPress={() => {
+              if (game.board[2]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 2: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 2: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(2, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -56,8 +65,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[3]}
             onPress={() => {
+              if (game.board[3]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 3: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 3: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(3, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -70,8 +84,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[4]}
             onPress={() => {
+              if (game.board[4]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 4: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 4: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(4, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -81,8 +100,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[5]}
             onPress={() => {
+              if (game.board[5]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 5: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 5: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(5, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -92,8 +116,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[6]}
             onPress={() => {
+              if (game.board[6]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 6: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 6: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(6, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -106,8 +135,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[7]}
             onPress={() => {
+              if (game.board[7]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 7: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 7: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(7, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -117,8 +151,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[8]}
             onPress={() => {
+              if (game.board[8]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 8: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 8: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(8, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);
@@ -128,8 +167,13 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[9]}
             onPress={() => {
+              if (game.board[9]) return null;
               if (game.turn == playWith) {
-                setGame((prev) => ({ ...prev, 9: playWith }));
+                setGame((prev) => ({
+                  ...prev,
+                  board: { ...prev.board, 9: playWith },
+                  turn: getTurn(playWith),
+                }));
                 sendEvent(9, playWith, getTurn(playWith));
               } else {
                 alert(alertTurMessage);

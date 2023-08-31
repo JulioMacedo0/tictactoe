@@ -84,7 +84,11 @@ function PlayGround() {
         const position = payload.position;
         const value = payload.value;
         const turn = payload.turn;
-        setGame((prev) => ({ ...prev, [position]: value, turn }));
+        setGame((prev) => ({
+          ...prev,
+          board: { ...prev.board, [position]: value },
+          turn,
+        }));
       })
       .subscribe();
 

@@ -14,7 +14,8 @@ export const getWinner = (board: Board) => {
 
   for (const combination of WinnerCondition) {
     const [a, b, c] = combination;
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+
+    if (new Set([board[a], board[b], board[c]]).size == 1) {
       return board[a];
     }
   }

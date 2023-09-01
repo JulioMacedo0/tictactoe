@@ -18,6 +18,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { getPlayer } from "@/helpers/get-player";
 import { BoardValue, Game } from "@/@types/game";
+import { getWinner } from "@/helpers/get-winner";
 
 interface User {
   userName: string;
@@ -94,6 +95,24 @@ function PlayGround() {
             turn,
           }));
         }
+
+        if (payload.event === BATTLE_EVENTS.rematch) {
+          Alert.alert(
+            "Rematch Inivite",
+            `${payload.userName} inivite you for a rematch`,
+            [
+              {
+                text: "Accept",
+                onPress: () => console.log("accept"),
+              },
+              {
+                text: "Cancel",
+                onPress: () => console.log("reject"),
+                style: "cancel",
+              },
+            ]
+          );
+        }
       })
       .subscribe();
 
@@ -113,6 +132,16 @@ function PlayGround() {
         turn,
         position,
         value,
+      },
+    });
+  };
+  const sendRematchEvent = async (userName: string) => {
+    const resp = await battleChannel.send({
+      type: "broadcast",
+      event: "tic-tac",
+      payload: {
+        event: BATTLE_EVENTS.rematch,
+        userName,
       },
     });
   };
@@ -282,8 +311,6 @@ function PlayGround() {
     }
   }, []);
 
-  console.log(`${user.user_metadata.username} render all`, lobbyUsers);
-
   if (isGame) {
     return (
       <View className="flex-1 bg-background">
@@ -308,6 +335,14 @@ function PlayGround() {
           setGame={setGame}
           sendGameValues={sendGameValue}
         />
+        {!!getWinner(game.board) && (
+          <Card
+            text="Play again"
+            variant="rose"
+            style="mt-8 mx-auto"
+            onPress={() => sendRematchEvent(user?.user_metadata.username)}
+          />
+        )}
       </View>
     );
   } else {

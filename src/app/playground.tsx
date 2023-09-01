@@ -62,6 +62,24 @@ function PlayGround() {
     },
   });
 
+  const resetGame = () => {
+    setGame((prev) => ({
+      rounds: prev.rounds + 1,
+      turn: "X",
+      board: {
+        1: null,
+        2: null,
+        3: null,
+        4: null,
+        5: null,
+        6: null,
+        7: null,
+        8: null,
+        9: null,
+      },
+    }));
+  };
+
   const [opponent, setOpponent] = useState<User | null>(null);
 
   const isGame = !!battleChannel;
@@ -94,24 +112,27 @@ function PlayGround() {
             board: { ...prev.board, [position]: value },
             turn,
           }));
-        }
-
-        if (payload.event === BATTLE_EVENTS.rematch) {
+        } else if (payload.event === BATTLE_EVENTS.rematch) {
           Alert.alert(
             "Rematch Inivite",
             `${payload.userName} inivite you for a rematch`,
             [
               {
                 text: "Accept",
-                onPress: () => console.log("accept"),
+                onPress: () => sendResolveRematchEvent(),
               },
               {
                 text: "Cancel",
-                onPress: () => console.log("reject"),
+                onPress: () =>
+                  sendRejectRematchEvent(user.user_metadata.username),
                 style: "cancel",
               },
             ]
           );
+        } else if (payload.event === BATTLE_EVENTS.rematch_reject) {
+          alert(`${payload.userName} reject your rematch`);
+        } else if (payload.event === BATTLE_EVENTS.rematch_resolve) {
+          resetGame();
         }
       })
       .subscribe();
@@ -144,6 +165,30 @@ function PlayGround() {
         userName,
       },
     });
+  };
+
+  const sendRejectRematchEvent = async (userName: string) => {
+    console.log("sendRejectRematchEvent", battleChannel);
+    const resp = await battleChannel.send({
+      type: "broadcast",
+      event: "tic-tac",
+      payload: {
+        event: BATTLE_EVENTS.rematch_reject,
+        userName,
+      },
+    });
+  };
+  const sendResolveRematchEvent = async () => {
+    const resp = await battleChannel.send({
+      type: "broadcast",
+      event: "tic-tac",
+      payload: {
+        event: BATTLE_EVENTS.rematch_resolve,
+      },
+    });
+    if (resp == "ok") {
+      resetGame();
+    }
   };
 
   const rejectInvite = async (userId: string) => {

@@ -7,7 +7,11 @@ import { supabase } from "@/supabase/init";
 import { useEffect, useState } from "react";
 import { Image } from "expo-image";
 import { View, Text, FlatList, Alert } from "react-native";
-import { CHANNEL_STATES, RESPONSE_INVITE } from "@/constants/supabase";
+import {
+  BATTLE_EVENTS,
+  CHANNEL_STATES,
+  RESPONSE_INVITE,
+} from "@/constants/supabase";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColors } from "@/hooks/use-colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -80,14 +84,16 @@ function PlayGround() {
         },
       })
       .on("broadcast", { event: "tic-tac" }, ({ payload }) => {
-        const position = payload.position;
-        const value = payload.value;
-        const turn = payload.turn;
-        setGame((prev) => ({
-          ...prev,
-          board: { ...prev.board, [position]: value },
-          turn,
-        }));
+        if (payload.event === BATTLE_EVENTS.move) {
+          const position = payload.position;
+          const value = payload.value;
+          const turn = payload.turn;
+          setGame((prev) => ({
+            ...prev,
+            board: { ...prev.board, [position]: value },
+            turn,
+          }));
+        }
       })
       .subscribe();
 
@@ -103,6 +109,7 @@ function PlayGround() {
       type: "broadcast",
       event: "tic-tac",
       payload: {
+        event: BATTLE_EVENTS.move,
         turn,
         position,
         value,

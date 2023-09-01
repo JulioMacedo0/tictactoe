@@ -11,7 +11,7 @@ export default function HomePage() {
     <View className="flex-1 items-center bg-background ">
       <Profile
         imageUrl="https://avatars.githubusercontent.com/u/57598810?v=4"
-        userName={`${user.user_metadata.username}`}
+        userName={`${user?.user_metadata.username}`}
       />
       <Card
         variant="rose"

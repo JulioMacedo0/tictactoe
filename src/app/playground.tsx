@@ -31,7 +31,7 @@ function PlayGround() {
     supabase.channel("lobby", {
       config: {
         presence: {
-          key: `${user.id}`,
+          key: `${user?.id}`,
         },
 
         broadcast: {
@@ -283,14 +283,14 @@ function PlayGround() {
         <View className="flex-row px-6 justify-between  mt-4">
           <Profile
             imageUrl="https://github.com/JulioMacedo0.png"
-            userName={`${user.user_metadata.username}`}
+            userName={`${user?.user_metadata.username}`}
             cardClasName="w-[120px] h-[135px]"
             playWith={getPlayer(battleChannel.topic, user.id)}
           />
           <RoundCounter roundCount={1} />
           <Profile
             imageUrl="https://github.com/wendelfreitas.png"
-            userName={opponent.userName}
+            userName={opponent?.userName}
             cardClasName="w-[120px] h-[135px]"
             playWith={getPlayer(battleChannel.topic, opponent.userId)}
           />

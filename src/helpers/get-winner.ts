@@ -1,6 +1,6 @@
-import { Board } from "@/@types/game";
+import { Board, BoardValue } from "@/@types/game";
 
-export const getWinner = (board: Board): Board | null => {
+export const getWinner = (board: Board): BoardValue | null => {
   const WinnerCondition = [
     [1, 2, 3],
     [4, 5, 6],

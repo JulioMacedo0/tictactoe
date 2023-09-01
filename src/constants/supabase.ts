@@ -11,3 +11,12 @@ export enum RESPONSE_INVITE {
   reject = "reject",
   invitation = "invitation",
 }
+
+export enum BATTLE_EVENTS {
+  rematch = "rematch",
+  rematch_resolve = "rematch_resolve",
+  rematch_reject = "rematch_reject",
+  exit = "exit",
+  move = "move",
+  reset = "reset",
+}

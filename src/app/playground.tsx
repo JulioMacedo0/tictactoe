@@ -18,7 +18,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { getPlayer } from "@/helpers/get-player";
 import { BoardValue, Game } from "@/@types/game";
-import { getWinner } from "@/helpers/get-winner";
+import { getDraw, getWinner } from "@/helpers/get-winner";
 
 interface User {
   userName: string;
@@ -365,6 +365,7 @@ function PlayGround() {
     const playerWinner = getWinner(game.board);
     const winner = !!playerWinner;
     const playWith = getPlayer(battleChannel.topic, user.id);
+    const draw = getDraw(game.board);
     return (
       <View className="flex-1 bg-background">
         <View className="flex-row px-6 justify-between  mt-4">
@@ -397,7 +398,7 @@ function PlayGround() {
           sendGameValues={sendGameValue}
           winner={winner}
         />
-        {winner && (
+        {(winner || draw) && (
           <Card
             text="Play again"
             variant="rose"

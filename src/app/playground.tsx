@@ -362,6 +362,9 @@ function PlayGround() {
   }, []);
 
   if (isGame) {
+    const playerWinner = getWinner(game.board);
+    const winner = !!playerWinner;
+    const playWith = getPlayer(battleChannel.topic, user.id);
     return (
       <View className="flex-1 bg-background">
         <View className="flex-row px-6 justify-between  mt-4">
@@ -369,7 +372,7 @@ function PlayGround() {
             imageUrl="https://github.com/JulioMacedo0.png"
             userName={`${user?.user_metadata.username}`}
             cardClasName="w-[120px] h-[135px]"
-            playWith={getPlayer(battleChannel.topic, user.id)}
+            playWith={playWith}
           />
           <RoundCounter roundCount={game.rounds} />
           <Profile
@@ -379,13 +382,22 @@ function PlayGround() {
             playWith={getPlayer(battleChannel.topic, opponent.userId)}
           />
         </View>
+        {winner && (
+          <Text className="text-base font-bold mx-auto">
+            Winner is{" "}
+            {playWith === playerWinner
+              ? user?.user_metadata.username
+              : opponent.userName}
+          </Text>
+        )}
         <TicTacToe
-          playWith={getPlayer(battleChannel.topic, user.id)}
+          playWith={playWith}
           game={game}
           setGame={setGame}
           sendGameValues={sendGameValue}
+          winner={winner}
         />
-        {!!getWinner(game.board) && (
+        {winner && (
           <Card
             text="Play again"
             variant="rose"

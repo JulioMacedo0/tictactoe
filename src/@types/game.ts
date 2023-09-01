@@ -1,4 +1,5 @@
 export type Game = {
+  rounds: number;
   turn: BoardValue;
   board: Board;
 };

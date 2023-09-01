@@ -35,6 +35,7 @@ export default function Register() {
         autoCorrect={false}
         keyboardType="email-address"
         onChangeText={(text) => setUserName(text)}
+        maxLength={8}
       />
 
       <Input

@@ -94,14 +94,14 @@ function PlayGround() {
   };
 
   const initBattleRoom = async (userId: string) => {
-    const respChannel = await supabase
-      .channel(userId, {
-        config: {
-          broadcast: {
-            ack: true,
-          },
+    const respChannel = await supabase.channel(userId, {
+      config: {
+        broadcast: {
+          ack: true,
         },
-      })
+      },
+    });
+    respChannel
       .on("broadcast", { event: "tic-tac" }, ({ payload }) => {
         if (payload.event === BATTLE_EVENTS.move) {
           const position = payload.position;
@@ -119,12 +119,15 @@ function PlayGround() {
             [
               {
                 text: "Accept",
-                onPress: () => sendResolveRematchEvent(),
+                onPress: () => sendResolveRematchEvent(respChannel),
               },
               {
                 text: "Cancel",
                 onPress: () =>
-                  sendRejectRematchEvent(user.user_metadata.username),
+                  sendRejectRematchEvent(
+                    respChannel,
+                    user.user_metadata.username
+                  ),
                 style: "cancel",
               },
             ]
@@ -167,9 +170,11 @@ function PlayGround() {
     });
   };
 
-  const sendRejectRematchEvent = async (userName: string) => {
-    console.log("sendRejectRematchEvent", battleChannel);
-    const resp = await battleChannel.send({
+  const sendRejectRematchEvent = async (
+    channel: RealtimeChannel,
+    userName: string
+  ) => {
+    const resp = await channel.send({
       type: "broadcast",
       event: "tic-tac",
       payload: {
@@ -178,8 +183,8 @@ function PlayGround() {
       },
     });
   };
-  const sendResolveRematchEvent = async () => {
-    const resp = await battleChannel.send({
+  const sendResolveRematchEvent = async (channel: RealtimeChannel) => {
+    const resp = await channel.send({
       type: "broadcast",
       event: "tic-tac",
       payload: {
@@ -366,7 +371,7 @@ function PlayGround() {
             cardClasName="w-[120px] h-[135px]"
             playWith={getPlayer(battleChannel.topic, user.id)}
           />
-          <RoundCounter roundCount={1} />
+          <RoundCounter roundCount={game.rounds} />
           <Profile
             imageUrl="https://github.com/wendelfreitas.png"
             userName={opponent?.userName}

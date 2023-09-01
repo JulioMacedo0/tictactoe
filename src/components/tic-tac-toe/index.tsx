@@ -8,6 +8,7 @@ import { getWinner } from "@/helpers/get-winner";
 type TicTacToeProps = {
   playWith: "X" | "O";
   game: Game;
+  winner: boolean;
   setGame: (value: React.SetStateAction<Game>) => void;
   sendGameValues: (
     position: number,
@@ -23,9 +24,8 @@ export const TicTacToe = ({
   game,
   setGame,
   sendGameValues,
+  winner,
 }: TicTacToeProps) => {
-  const winner = getWinner(game.board);
-
   return (
     <View className="h-[40%] w-[90%] mx-auto mt-8">
       <View
@@ -36,7 +36,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[1]}
             onPress={() => {
-              if (game.board[1]) return null;
+              if (game.board[1] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -52,7 +52,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[2]}
             onPress={() => {
-              if (game.board[2]) return null;
+              if (game.board[2] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -68,7 +68,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[3]}
             onPress={() => {
-              if (game.board[3]) return null;
+              if (game.board[3] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -87,7 +87,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[4]}
             onPress={() => {
-              if (game.board[4]) return null;
+              if (game.board[4] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -103,7 +103,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[5]}
             onPress={() => {
-              if (game.board[5]) return null;
+              if (game.board[5] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -119,7 +119,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[6]}
             onPress={() => {
-              if (game.board[6]) return null;
+              if (game.board[6] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -138,7 +138,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[7]}
             onPress={() => {
-              if (game.board[7]) return null;
+              if (game.board[7] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -154,7 +154,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[8]}
             onPress={() => {
-              if (game.board[8]) return null;
+              if (game.board[8] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,
@@ -170,7 +170,7 @@ export const TicTacToe = ({
           <TicTacToeButton
             icon={game.board[9]}
             onPress={() => {
-              if (game.board[9]) return null;
+              if (game.board[9] || winner) return null;
               if (game.turn == playWith) {
                 setGame((prev) => ({
                   ...prev,

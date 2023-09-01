@@ -42,6 +42,7 @@ function PlayGround() {
   );
 
   const [game, setGame] = useState<Game>({
+    rounds: 1,
     turn: "X",
     board: {
       1: null,
@@ -298,7 +299,7 @@ function PlayGround() {
           playWith={getPlayer(battleChannel.topic, user.id)}
           game={game}
           setGame={setGame}
-          sendEvent={sendGameValue}
+          sendGameValues={sendGameValue}
         />
       </View>
     );

@@ -3,26 +3,29 @@ import { View, StyleSheet } from "react-native";
 import { TicTacToeButton } from "@/components/tic-tac-button";
 import { Game, BoardValue } from "@/@types/game";
 import { getTurn } from "@/helpers/get-turn";
+import { getWinner } from "@/helpers/get-winner";
 
 type TicTacToeProps = {
   playWith: "X" | "O";
   game: Game;
   setGame: (value: React.SetStateAction<Game>) => void;
-  sendEvent: (
+  sendGameValues: (
     position: number,
     value: BoardValue,
     turn: BoardValue
   ) => Promise<void>;
 };
 
-const alertTurMessage = "Its not your turn";
+const ALERT_TURN_MSG = "Its not your turn";
 
 export const TicTacToe = ({
   playWith,
   game,
   setGame,
-  sendEvent,
+  sendGameValues,
 }: TicTacToeProps) => {
+  const winner = getWinner(game.board);
+
   return (
     <View className="h-[40%] w-[90%] mx-auto mt-8">
       <View
@@ -40,9 +43,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 1: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(1, playWith, getTurn(playWith));
+                sendGameValues(1, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -56,9 +59,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 2: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(2, playWith, getTurn(playWith));
+                sendGameValues(2, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -72,9 +75,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 3: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(3, playWith, getTurn(playWith));
+                sendGameValues(3, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -91,9 +94,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 4: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(4, playWith, getTurn(playWith));
+                sendGameValues(4, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -107,9 +110,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 5: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(5, playWith, getTurn(playWith));
+                sendGameValues(5, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -123,9 +126,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 6: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(6, playWith, getTurn(playWith));
+                sendGameValues(6, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -142,9 +145,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 7: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(7, playWith, getTurn(playWith));
+                sendGameValues(7, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -158,9 +161,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 8: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(8, playWith, getTurn(playWith));
+                sendGameValues(8, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />
@@ -174,9 +177,9 @@ export const TicTacToe = ({
                   board: { ...prev.board, 9: playWith },
                   turn: getTurn(playWith),
                 }));
-                sendEvent(9, playWith, getTurn(playWith));
+                sendGameValues(9, playWith, getTurn(playWith));
               } else {
-                alert(alertTurMessage);
+                alert(ALERT_TURN_MSG);
               }
             }}
           />

@@ -22,3 +22,11 @@ export const getWinner = (board: Board): BoardValue | null => {
 
   return null;
 };
+
+export const getDraw = (board: Board) => {
+  const arr = [];
+  for (const key in board) {
+    arr.push(board[key]);
+  }
+  return arr.every((value) => value != null);
+};

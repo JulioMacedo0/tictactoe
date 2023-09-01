@@ -95,6 +95,7 @@ export function Provider(props: ProviderProps) {
       return { error, data: undefined };
     } finally {
       setAuth(null);
+      router.replace("/login");
     }
   };
   /**

@@ -24,7 +24,8 @@ interface AuthContextValue {
   createAcount: (
     email: string,
     password: string,
-    username: string
+    username: string,
+    userPicture: string
   ) => Promise<SignInResponse>;
   logout: () => Promise<SignOutResponse>;
   user: User | undefined | null;
@@ -137,7 +138,8 @@ export function Provider(props: ProviderProps) {
   const createAcount = async (
     email: string,
     password: string,
-    username: string
+    username: string,
+    userPicture: string
   ): Promise<SignInResponse> => {
     setLoading(true);
     try {
@@ -149,7 +151,7 @@ export function Provider(props: ProviderProps) {
       if (error) throw error;
 
       const { data, error: updateErr } = await supabase.auth.updateUser({
-        data: { username, userPicture: "" },
+        data: { username, userPicture },
       });
       if (updateErr) throw updateErr;
 

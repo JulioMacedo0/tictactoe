@@ -6,9 +6,13 @@ import { StyleSheet, View, Text } from "react-native";
 export default function ConfigPage() {
   const { logout } = useAuth();
   return (
-    <View className="">
-      <Text>Config</Text>
-      <Card text="Logout" variant="rose" onPress={() => logout()} />
+    <View className=" bg-background flex-1">
+      <Card
+        text="Logout"
+        variant="rose"
+        onPress={() => logout()}
+        style="mx-auto"
+      />
     </View>
   );
 }

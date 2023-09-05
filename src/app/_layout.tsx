@@ -47,6 +47,15 @@ function RootLayoutNav() {
           animationDuration: 300,
         }}
       />
+
+      <Stack.Screen
+        name="profileData"
+        options={{
+          headerShown: true,
+          animation: "fade_from_bottom",
+          animationDuration: 300,
+        }}
+      />
     </Stack>
   );
 }

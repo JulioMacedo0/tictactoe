@@ -1,14 +1,15 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useColors } from "@hooks/use-colors";
 import { useState } from "react";
-import { supabase } from "@/supabase/init";
 import { Card } from "@/components/card";
 import { Input } from "@/components/Input";
 import { Feather, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { useAuth } from "@/context/authContext";
+import LottieView from "lottie-react-native";
+import { colors } from "@/themes/colors";
 
 export default function Register() {
   const { primary, secundary } = useColors();
@@ -16,7 +17,7 @@ export default function Register() {
   const [userName, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
+  const [pictureUrl, setPictureUrl] = useState<string>("");
   return (
     <LinearGradient
       colors={[primary, secundary]}
@@ -26,6 +27,28 @@ export default function Register() {
       }}
     >
       <StatusBar style="light" />
+      <View className="h-48 w-48 items-center mb-4">
+        <View className="h-40 w-40 ">
+          <LottieView
+            source={require("@lotties/profile.json")}
+            autoPlay
+            colorFilters={[
+              { keypath: "circle", color: colors.secundary },
+              { keypath: "body", color: colors.secundary },
+              { keypath: "head", color: colors.secundary },
+              { keypath: "+", color: "#fff" },
+            ]}
+            loop={false}
+          />
+        </View>
+
+        <Card
+          style="absolute bottom-1"
+          text="Upload your photo"
+          variant="gold"
+          onPress={() => console.log("upload")}
+        />
+      </View>
       <Input
         icon={<Feather name="user" size={24} color="white" />}
         variant="rose"
@@ -63,7 +86,7 @@ export default function Register() {
       <Card
         text={loading ? "Loading..." : "Create account"}
         variant="gold"
-        onPress={() => createAcount(email, password, userName)}
+        onPress={() => createAcount(email, password, userName, pictureUrl)}
       />
       <View className="flex-row ">
         <Text className="text-white text-base "> have account?</Text>

@@ -8,6 +8,7 @@ import { Card } from "@/components/card";
 import { Input } from "@/components/Input";
 import { MaterialIcons, Octicons } from "@expo/vector-icons";
 import { useAuth } from "@/context/authContext";
+import LottieView from "lottie-react-native";
 
 export default function Login() {
   const route = useRouter();
@@ -26,6 +27,13 @@ export default function Login() {
       }}
     >
       <StatusBar style="light" />
+      <View className="h-60 w-60">
+        <LottieView
+          source={require("@lotties/XO_animeted.json")}
+          autoPlay
+          loop={false}
+        />
+      </View>
 
       <Input
         icon={<MaterialIcons name="email" size={24} color="white" />}

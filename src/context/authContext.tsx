@@ -8,7 +8,8 @@ import {
   useSegments,
 } from "expo-router";
 import React, { useContext, createContext, useEffect, useState } from "react";
-
+import * as FileSystem from "expo-file-system";
+import { Buffer } from "buffer";
 // Define the AuthContextValue interface
 interface SignInResponse {
   data: User | undefined;
@@ -153,13 +154,19 @@ export function Provider(props: ProviderProps) {
         email,
         password,
       });
-      const picturePath = `${username}/${data.user.id}.${picture.extension}`;
+      const picturePath = `${username}/${data.user.id}.png`;
 
       if (error) throw error;
 
+      const base64 = await FileSystem.readAsStringAsync(picture.uri, {
+        encoding: "base64",
+      });
+
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from(BUCKETS_NAMES.avatars)
-        .upload(picturePath, picture.uri);
+        .upload(picturePath, Buffer.from(base64, "base64"), {
+          contentType: "image/png",
+        });
 
       if (uploadError) throw uploadError;
 

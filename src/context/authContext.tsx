@@ -1,3 +1,4 @@
+import { BUCKETS_NAMES } from "@/constants/supabase";
 import { supabase } from "@/supabase/init";
 import { User } from "@supabase/supabase-js";
 import {
@@ -19,14 +20,19 @@ interface SignOutResponse {
   data: {} | undefined;
 }
 
+type createAcountArgs = {
+  email: string;
+  password: string;
+  username: string;
+  picture: {
+    uri: string;
+    extension: string;
+  };
+};
+
 interface AuthContextValue {
   login: (email: string, password: string) => Promise<SignInResponse>;
-  createAcount: (
-    email: string,
-    password: string,
-    username: string,
-    userPicture: string
-  ) => Promise<SignInResponse>;
+  createAcount: (createAcountArgs: createAcountArgs) => Promise<SignInResponse>;
   logout: () => Promise<SignOutResponse>;
   user: User | undefined | null;
   authInitialized: boolean;
@@ -135,29 +141,41 @@ export function Provider(props: ProviderProps) {
    * @param username
    * @returns
    */
-  const createAcount = async (
-    email: string,
-    password: string,
-    username: string,
-    userPicture: string
-  ): Promise<SignInResponse> => {
+  const createAcount = async ({
+    email,
+    password,
+    username,
+    picture,
+  }: createAcountArgs): Promise<SignInResponse> => {
     setLoading(true);
     try {
-      let { error } = await supabase.auth.signUp({
+      let { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
+      const picturePath = `${username}/${data.user.id}.${picture.extension}`;
 
       if (error) throw error;
 
-      const { data, error: updateErr } = await supabase.auth.updateUser({
-        data: { username, userPicture },
-      });
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from(BUCKETS_NAMES.avatars)
+        .upload(picturePath, picture.uri);
+
+      if (uploadError) throw uploadError;
+
+      const { data: pictureData } = supabase.storage
+        .from(BUCKETS_NAMES.avatars)
+        .getPublicUrl(picturePath);
+
+      const { data: updateUserData, error: updateErr } =
+        await supabase.auth.updateUser({
+          data: { username, userPicture: pictureData.publicUrl },
+        });
       if (updateErr) throw updateErr;
 
-      setAuth(data.user);
+      setAuth(updateUserData.user);
       setLoading(false);
-      return { data: data?.user as User, error: undefined };
+      return { data: updateUserData?.user as User, error: undefined };
     } catch (error) {
       console.log("login error", error);
       setAuth(null);

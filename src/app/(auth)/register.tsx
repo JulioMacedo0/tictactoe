@@ -40,7 +40,6 @@ export default function Register() {
 
     if (!result.canceled) {
       setPictureUrl(result.assets[0].uri);
-      return;
     }
   };
   const pickImageFromCamera = async () => {

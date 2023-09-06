@@ -20,3 +20,7 @@ export enum BATTLE_EVENTS {
   move = "move",
   reset = "reset",
 }
+
+export enum BUCKETS_NAMES {
+  avatars = "avatars",
+}

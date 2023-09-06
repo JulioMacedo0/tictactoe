@@ -170,7 +170,7 @@ export function Provider(props: ProviderProps) {
 
       if (uploadError) throw uploadError;
 
-      const { data: pictureData } = supabase.storage
+      const { data: pictureData } = await supabase.storage
         .from(BUCKETS_NAMES.avatars)
         .getPublicUrl(picturePath);
 

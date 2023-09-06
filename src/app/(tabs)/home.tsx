@@ -7,7 +7,6 @@ import { useAuth } from "@/context/authContext";
 export default function HomePage() {
   const navigate = useRouter();
   const { user } = useAuth();
-  console.log(user.user_metadata);
   return (
     <View className="flex-1 items-center bg-background ">
       <Profile

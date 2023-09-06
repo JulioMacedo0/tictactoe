@@ -7,10 +7,11 @@ import { useAuth } from "@/context/authContext";
 export default function HomePage() {
   const navigate = useRouter();
   const { user } = useAuth();
+  console.log(user.user_metadata);
   return (
     <View className="flex-1 items-center bg-background ">
       <Profile
-        imageUrl="https://avatars.githubusercontent.com/u/57598810?v=4"
+        imageUrl={user?.user_metadata.userPicture}
         userName={`${user?.user_metadata.username}`}
       />
       <Card

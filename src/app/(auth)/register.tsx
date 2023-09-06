@@ -89,9 +89,9 @@ export default function Register() {
         onPress={() => createAcount(email, password, userName, pictureUrl)}
       />
       <View className="flex-row ">
-        <Text className="text-white text-base "> have account?</Text>
+        <Text className="text-white text-base "> have an account?</Text>
         <TouchableOpacity onPress={() => router.back()}>
-          <Text className="text-primary text-base "> Click here</Text>
+          <Text className="text-primary text-base "> Sign in</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>

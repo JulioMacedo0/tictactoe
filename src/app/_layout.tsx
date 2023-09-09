@@ -2,7 +2,9 @@ import { Provider, useAuth } from "@/context/authContext";
 import { useColors } from "@/hooks/use-colors";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
+import { Text } from "react-native";
 
+SplashScreen.preventAutoHideAsync();
 export default function Layout() {
   return (
     <Provider>
@@ -16,6 +18,7 @@ function RootLayoutNav() {
   const { authInitialized, user } = useAuth();
 
   if (!authInitialized && !user) return null;
+
   return (
     <Stack
       screenOptions={{

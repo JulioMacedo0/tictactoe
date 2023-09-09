@@ -10,6 +10,7 @@ import {
 import React, { useContext, createContext, useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
 import { Buffer } from "buffer";
+import { SplashScreen } from "expo-router";
 // Define the AuthContextValue interface
 interface SignInResponse {
   data: User | undefined;
@@ -49,6 +50,7 @@ interface ProviderProps {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function Provider(props: ProviderProps) {
+  console.log("Provider run");
   const [user, setAuth] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [authInitialized, setAuthInitialized] = useState<boolean>(false);
@@ -64,18 +66,21 @@ export function Provider(props: ProviderProps) {
 
     useEffect(() => {
       if (!navigationState?.key || !authInitialized) return;
-
       const inAuthGroup = segments[0] === "(auth)";
-      console.log(segments);
+      if (segments[0] != "[...404]" && inAuthGroup != undefined) {
+        SplashScreen.hideAsync();
+      }
       if (
         // If the user is not signed in and the initial segment is not anything in the auth group.
         !user &&
         !inAuthGroup
       ) {
         // Redirect to the sign-in page.
+
         router.replace("/login");
       } else if (user && inAuthGroup) {
         // Redirect away from the sign-in page.
+
         router.replace("/(tabs)/home");
       }
     }, [user, segments, authInitialized, navigationState?.key]);

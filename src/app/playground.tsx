@@ -202,7 +202,7 @@ function PlayGround() {
       event: userId,
       payload: {
         invite: RESPONSE_INVITE.reject,
-        id: `${user.id}`,
+        id: `${user?.id}`,
         userName: user.user_metadata.username,
       },
     });
@@ -216,7 +216,7 @@ function PlayGround() {
       event: userId,
       payload: {
         invite: RESPONSE_INVITE.resolve,
-        id: `${user.id}`,
+        id: `${user?.id}`,
         userName: user.user_metadata.username,
         userPicture: user.user_metadata.userPicture,
       },
@@ -238,7 +238,7 @@ function PlayGround() {
       event: userId,
       payload: {
         invite: RESPONSE_INVITE.invitation,
-        id: `${user.id}`,
+        id: `${user?.id}`,
         userName,
         userPicture: user.app_metadata.userPicture,
       },
@@ -253,20 +253,20 @@ function PlayGround() {
   };
 
   const addUser = (userObj: User) => {
-    if (user.id == userObj.userId) return;
+    if (user?.id == userObj.userId) return;
     console.log(`addUser from ${user.user_metadata.username}`, userObj);
     setLobbyUsers((users) => [...users, userObj]);
   };
 
   const removeUser = (id: string) => {
-    if (user.id == id) return;
+    if (user?.id == id) return;
     const users = lobbyUsers.filter((user) => user.userId != id);
     console.log(`removeUser from ${user.user_metadata.username}`, users);
     setLobbyUsers(users);
   };
 
   const updateUser = (syncObj: Object) => {
-    const keys = Object.keys(syncObj).filter((key) => key != user.id);
+    const keys = Object.keys(syncObj).filter((key) => key != user?.id);
     const users = new Array<User>();
     for (let key of keys) {
       const userObj = {
@@ -285,8 +285,7 @@ function PlayGround() {
       console.log(`Channel state is : ${channel.state}. Run subscriptions....`);
 
       const channelResp = channel
-        .on("broadcast", { event: `${user.id}` }, ({ payload }) => {
-          console.log(`====================>`, payload.id);
+        .on("broadcast", { event: `${user?.id}` }, ({ payload }) => {
           if (payload.invite == RESPONSE_INVITE.reject) {
             Alert.alert(
               "Invite Rejected",

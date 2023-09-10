@@ -240,7 +240,7 @@ function PlayGround() {
         invite: RESPONSE_INVITE.invitation,
         id: `${user?.id}`,
         userName,
-        userPicture: user.app_metadata.userPicture,
+        userPicture: user.user_metadata.userPicture,
       },
     });
 
@@ -345,7 +345,7 @@ function PlayGround() {
             const presenceTrackStatus = await channel.track({
               userName: `${user.user_metadata.username}`,
               userId: `${user.id}`,
-              userPicture: "",
+              userPicture: `${user.user_metadata.userPicture}`,
             });
             console.log(
               `presenceTrackStatus from ${user.user_metadata.username} is :${presenceTrackStatus}`
@@ -369,14 +369,14 @@ function PlayGround() {
       <View className="flex-1 bg-background">
         <View className="flex-row px-6 justify-between  mt-4">
           <Profile
-            imageUrl="https://github.com/JulioMacedo0.png"
+            imageUrl={`${user?.user_metadata.userPicture}`}
             userName={`${user?.user_metadata.username}`}
             cardClasName="w-[120px] h-[135px]"
             playWith={playWith}
           />
           <RoundCounter roundCount={game.rounds} />
           <Profile
-            imageUrl="https://github.com/wendelfreitas.png"
+            imageUrl={`${opponent?.userPicture}`}
             userName={opponent?.userName}
             cardClasName="w-[120px] h-[135px]"
             playWith={getPlayer(battleChannel.topic, opponent.userId)}
@@ -418,7 +418,7 @@ function PlayGround() {
             <View className="flex-1 h-16 w-4/5 bg-white mx-auto rounded-xl overflow-hidden items-center justify-between flex-row">
               <Image
                 className="w-1/5 h-16"
-                source={"https://github.com/JulioMacedo0.png"}
+                source={item?.userPicture}
                 contentFit="contain"
                 onError={(err) => {
                   console.log(err);

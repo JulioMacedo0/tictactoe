@@ -63,7 +63,7 @@ export default function Login() {
       />
       <View className="flex-row ">
         <Text className="text-white text-base ">Don't have an account?</Text>
-        <TouchableOpacity onPress={() => route.push("/register")}>
+        <TouchableOpacity onPress={() => route.replace("/register")}>
           <Text className="text-primary text-base "> Sign up</Text>
         </TouchableOpacity>
       </View>

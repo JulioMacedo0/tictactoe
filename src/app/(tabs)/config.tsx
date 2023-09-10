@@ -7,7 +7,7 @@ export default function ConfigPage() {
   const { logout } = useAuth();
   const navigate = useRouter();
   return (
-    <View className=" bg-background flex-1">
+    <View className=" bg-background flex-1 " style={styles.space}>
       <Card
         text="Logout"
         variant="rose"
@@ -23,3 +23,9 @@ export default function ConfigPage() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  space: {
+    gap: 15,
+  },
+});

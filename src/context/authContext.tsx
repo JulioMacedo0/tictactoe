@@ -68,7 +68,7 @@ export function Provider(props: ProviderProps) {
       if (!navigationState?.key || !authInitialized) return;
       const inAuthGroup = segments[0] === "(auth)";
       if (segments[0] != "[...404]" && inAuthGroup != undefined) {
-        SplashScreen.hideAsync();
+        setTimeout(() => SplashScreen.hideAsync(), 150);
       }
       if (
         // If the user is not signed in and the initial segment is not anything in the auth group.

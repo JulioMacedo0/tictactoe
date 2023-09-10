@@ -22,7 +22,7 @@ function RootLayoutNav() {
   return (
     <Stack
       screenOptions={{
-        animation: "fade",
+        animation: "fade_from_bottom",
         headerShown: false,
       }}
     >
@@ -40,7 +40,7 @@ function RootLayoutNav() {
         name="(auth)/login"
         options={{
           animation: "fade_from_bottom",
-          animationDuration: 300,
+          animationDuration: 600,
         }}
       />
       <Stack.Screen

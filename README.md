@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
  
- <p>Tic Tac Toe: Multiplayer</p>
+ <p>Tic Tac Toe: Multplayer</p>
    <br>
   <img src="https://i.imgur.com/5PXz4VC.png" alt="React Logo" height="180" width="238">
   <br>
